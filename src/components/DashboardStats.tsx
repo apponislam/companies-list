@@ -1,27 +1,29 @@
 import React from 'react';
-import { Company } from '@/lib/database';
 import styles from './DashboardStats.module.css';
 import { Icons } from './Icons';
 
-interface DashboardStatsProps {
-  companies: Company[];
+export interface GlobalStats {
+  total: number;
+  priority: number;
+  contacted: number;
+  applied: number;
 }
 
-export default function DashboardStats({ companies }: DashboardStatsProps) {
-  const total = companies.length;
+interface DashboardStatsProps {
+  stats: GlobalStats | null;
+}
+
+export default function DashboardStats({ stats }: DashboardStatsProps) {
+  const total = stats?.total || 0;
   
   // High interest targets (Target / Save status with 4 or 5 star rating)
-  const priorityTargets = companies.filter(
-    (c) => (c.status === 'Target / Save' || c.status === 'To Explore') && c.rating >= 4
-  ).length;
+  const priorityTargets = stats?.priority || 0;
 
   // Active pipelines (Contacted, In Dialogue)
-  const activeContacts = companies.filter(
-    (c) => c.status === 'Contacted' || c.status === 'In Dialogue'
-  ).length;
+  const activeContacts = stats?.contacted || 0;
 
   // Applied count
-  const appliedCount = companies.filter((c) => c.status === 'Applied').length;
+  const appliedCount = stats?.applied || 0;
 
   return (
     <div className={styles.statsContainer}>

@@ -1,10 +1,25 @@
 import { NextResponse } from 'next/server';
-import { getCompanies, createCompany } from '@/lib/database';
+import { getCompanies, createCompany, getUniqueCategories, getGlobalStats } from '@/lib/database';
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
-    const companies = await getCompanies();
-    return NextResponse.json(companies);
+    const { searchParams } = new URL(request.url);
+    const page = Number(searchParams.get('page')) || 1;
+    const limit = Number(searchParams.get('limit')) || 12;
+    const search = searchParams.get('search') || '';
+    const status = searchParams.get('status') || 'All';
+    const category = searchParams.get('category') || 'All';
+    const minRating = Number(searchParams.get('minRating')) || 0;
+
+    const data = await getCompanies({ page, limit, search, status, category, minRating });
+    const categories = await getUniqueCategories();
+    const stats = await getGlobalStats();
+
+    return NextResponse.json({
+      ...data,
+      categories,
+      stats,
+    });
   } catch (error) {
     console.error('API GET error:', error);
     return NextResponse.json({ error: 'Failed to fetch companies' }, { status: 500 });

@@ -42,6 +42,30 @@ const CompanySchema = new Schema<ICompany>(
   }
 );
 
+// Define compound text index for search fields
+CompanySchema.index(
+  {
+    name: 'text',
+    category: 'text',
+    address: 'text',
+    notes: 'text',
+  },
+  {
+    weights: {
+      name: 10,
+      category: 5,
+      address: 3,
+      notes: 1,
+    },
+    name: 'CompanyTextIndex',
+  }
+);
+
+// Regular indexes for filtering & sorting
+CompanySchema.index({ status: 1 });
+CompanySchema.index({ rating: -1 });
+CompanySchema.index({ createdAt: -1 });
+
 const Company: Model<ICompany> = mongoose.models.Company || mongoose.model<ICompany>('Company', CompanySchema);
 
 export default Company;

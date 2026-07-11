@@ -40,10 +40,103 @@ function mapCompany(doc: any): Company {
   };
 }
 
-export async function getCompanies(): Promise<Company[]> {
+export interface PaginatedCompanies {
+  companies: Company[];
+  total: number;
+  pages: number;
+  page: number;
+}
+
+export async function getCompanies(options?: {
+  page?: number;
+  limit?: number;
+  search?: string;
+  status?: string;
+  category?: string;
+  minRating?: number;
+}): Promise<PaginatedCompanies> {
   await dbConnect();
-  const docs = await CompanyModel.find({}).sort({ createdAt: -1 });
-  return docs.map(mapCompany);
+  
+  const page = Number(options?.page) || 1;
+  const limit = Number(options?.limit) || 12;
+  const skip = (page - 1) * limit;
+
+  const query: any = {};
+
+  if (options?.status && options.status !== 'All') {
+    query.status = options.status;
+  }
+
+  if (options?.category && options.category !== 'All') {
+    query.category = options.category;
+  }
+
+  if (options?.minRating && options.minRating > 0) {
+    query.rating = { $gte: options.minRating };
+  }
+
+  if (options?.search) {
+    const searchRegex = { $regex: options.search, $options: 'i' };
+    query.$or = [
+      { name: searchRegex },
+      { category: searchRegex },
+      { address: searchRegex },
+      { notes: searchRegex }
+    ];
+  }
+
+  const total = await CompanyModel.countDocuments(query);
+  const docs = await CompanyModel.find(query)
+    .sort({ createdAt: -1 })
+    .skip(skip)
+    .limit(limit);
+
+  return {
+    companies: docs.map(mapCompany),
+    total,
+    pages: Math.ceil(total / limit) || 1,
+    page,
+  };
+}
+
+export async function getUniqueCategories(): Promise<string[]> {
+  await dbConnect();
+  try {
+    return await CompanyModel.distinct('category');
+  } catch (error) {
+    return [];
+  }
+}
+
+export interface GlobalStats {
+  total: number;
+  priority: number;
+  contacted: number;
+  applied: number;
+}
+
+export async function getGlobalStats(): Promise<GlobalStats> {
+  await dbConnect();
+  try {
+    const total = await CompanyModel.countDocuments({});
+    
+    const priority = await CompanyModel.countDocuments({
+      status: { $in: ['Target / Save', 'To Explore'] },
+      rating: { $gte: 4 }
+    });
+
+    const contacted = await CompanyModel.countDocuments({
+      status: { $in: ['Contacted', 'In Dialogue'] }
+    });
+
+    const applied = await CompanyModel.countDocuments({
+      status: 'Applied'
+    });
+
+    return { total, priority, contacted, applied };
+  } catch (error) {
+    return { total: 0, priority: 0, contacted: 0, applied: 0 };
+  }
 }
 
 export async function getCompanyById(id: string): Promise<Company | null> {
