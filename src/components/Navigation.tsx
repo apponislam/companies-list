@@ -11,7 +11,7 @@ export default function Navigation() {
 
   return (
     <header className="sticky top-0 z-[100] w-full border-b border-border-color bg-bg-primary/80 backdrop-blur-md">
-      <div className="max-w-[1280px] mx-auto px-6 h-16 flex items-center justify-between">
+      <div className="container mx-auto px-6 h-16 flex items-center justify-between">
         
         {/* Logo Brand */}
         <Link href="/" className="flex items-center gap-2.5 hover:opacity-90 transition-opacity">

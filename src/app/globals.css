@@ -15,12 +15,12 @@
   --color-text-primary: var(--text-primary);
   --color-text-secondary: var(--text-secondary);
   
-  --color-explore: #3b82f6;
-  --color-target: #f59e0b;
-  --color-contacted: #8b5cf6;
-  --color-applied: #10b981;
-  --color-dialogue: #14b8a6;
-  --color-nothiring: #ef4444;
+  --color-explore: var(--status-explore);
+  --color-target: var(--status-target);
+  --color-contacted: var(--status-contacted);
+  --color-applied: var(--status-applied);
+  --color-dialogue: var(--status-dialogue);
+  --color-nothiring: var(--status-nothiring);
 }
 
 :root {
@@ -31,10 +31,17 @@
   --border-color: #a3cef1;
   
   --brand-primary: #274c77;
-  --brand-secondary: #6096ba;
+  --brand-secondary: #2d628a;
   
   --text-primary: #274c77;
-  --text-secondary: #8b8c89;
+  --text-secondary: #5a6065;
+
+  --status-explore: #1d4ed8;
+  --status-target: #b45309;
+  --status-contacted: #6d28d9;
+  --status-applied: #047857;
+  --status-dialogue: #0f766e;
+  --status-nothiring: #b91c1c;
 }
 
 .dark {
@@ -48,7 +55,14 @@
   --brand-secondary: #a3cef1;
   
   --text-primary: #e7ecef;
-  --text-secondary: #8b8c89;
+  --text-secondary: #94a3b8;
+
+  --status-explore: #3b82f6;
+  --status-target: #f59e0b;
+  --status-contacted: #8b5cf6;
+  --status-applied: #10b981;
+  --status-dialogue: #14b8a6;
+  --status-nothiring: #ef4444;
 }
 
 /* Custom scrollbars & resets */

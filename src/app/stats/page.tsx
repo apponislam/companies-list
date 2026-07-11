@@ -40,7 +40,7 @@ export default function StatsPage() {
 
   if (!stats || stats.total === 0) {
     return (
-      <main className="max-w-[1280px] mx-auto px-6 py-12 flex-1 flex items-center justify-center">
+      <main className="container mx-auto px-6 py-12 flex-1 flex items-center justify-center">
         <div className="bg-bg-secondary border border-dashed border-border-color rounded-2xl p-16 text-center max-w-[500px] flex flex-col items-center gap-5 text-text-secondary">
           <Icons.Website size={48} className="text-text-secondary" />
           <h2 className="text-xl font-bold text-text-primary">No Analytics Data Available</h2>
@@ -82,7 +82,7 @@ export default function StatsPage() {
   };
 
   return (
-    <main className="max-w-[1280px] mx-auto px-6 py-10 flex-1 flex flex-col gap-8 animate-fade-in">
+    <main className="container mx-auto px-6 py-10 flex-1 flex flex-col gap-8 animate-fade-in">
       {/* Title */}
       <div className="flex flex-col gap-1.5">
         <h1 className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-brand-primary to-brand-secondary tracking-tight">

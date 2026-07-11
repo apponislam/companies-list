@@ -230,7 +230,7 @@ export default function DashboardPage() {
 
   return (
     <>
-      <main className="max-w-[1280px] mx-auto px-6 py-8">
+      <main className="container mx-auto px-6 py-8">
         <div className="w-full min-h-screen flex flex-col py-8 animate-fade-in">
         
         {/* Header */}
@@ -396,7 +396,7 @@ export default function DashboardPage() {
                 </div>
               )}
               {!isLoading && page === totalPages && totalCount > 0 && (
-                <p className="text-xs font-medium text-gray-500 tracking-wider">
+                <p className="text-xs font-medium text-text-secondary tracking-wider">
                   You have viewed all {totalCount} target companies.
                 </p>
               )}
