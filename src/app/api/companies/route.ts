@@ -29,7 +29,7 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    
+
     // Basic validation
     if (!body.name) {
       return NextResponse.json({ error: 'Company name is required' }, { status: 400 });

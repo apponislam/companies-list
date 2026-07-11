@@ -56,7 +56,7 @@ export async function getCompanies(options?: {
   minRating?: number;
 }): Promise<PaginatedCompanies> {
   await dbConnect();
-  
+
   const page = Number(options?.page) || 1;
   const limit = Number(options?.limit) || 12;
   const skip = (page - 1) * limit;
@@ -119,7 +119,7 @@ export async function getGlobalStats(): Promise<GlobalStats> {
   await dbConnect();
   try {
     const total = await CompanyModel.countDocuments({});
-    
+
     const priority = await CompanyModel.countDocuments({
       status: { $in: ['Target / Save', 'To Explore'] },
       rating: { $gte: 4 }
@@ -192,7 +192,7 @@ export async function getDetailedStats(): Promise<DetailedStats> {
   await dbConnect();
   try {
     const total = await CompanyModel.countDocuments({});
-    
+
     const priority = await CompanyModel.countDocuments({
       status: { $in: ['Target / Save', 'To Explore'] },
       rating: { $gte: 4 }

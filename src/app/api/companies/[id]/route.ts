@@ -8,7 +8,7 @@ export async function PUT(
   try {
     const { id } = await params;
     const body = await request.json();
-    
+
     // Perform partial updates
     const updated = await updateCompany(id, body);
     if (!updated) {
