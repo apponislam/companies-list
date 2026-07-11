@@ -176,3 +176,90 @@ export async function deleteCompany(id: string): Promise<boolean> {
     return false;
   }
 }
+
+export interface DetailedStats {
+  total: number;
+  priority: number;
+  contacted: number;
+  applied: number;
+  statusCounts: { status: string; count: number }[];
+  categoryCounts: { category: string; count: number }[];
+  ratingCounts: { rating: number; count: number }[];
+  averageRating: number;
+}
+
+export async function getDetailedStats(): Promise<DetailedStats> {
+  await dbConnect();
+  try {
+    const total = await CompanyModel.countDocuments({});
+    
+    const priority = await CompanyModel.countDocuments({
+      status: { $in: ['Target / Save', 'To Explore'] },
+      rating: { $gte: 4 }
+    });
+
+    const contacted = await CompanyModel.countDocuments({
+      status: { $in: ['Contacted', 'In Dialogue'] }
+    });
+
+    const applied = await CompanyModel.countDocuments({
+      status: 'Applied'
+    });
+
+    // Aggregation for status counts
+    const statusCountsRaw = await CompanyModel.aggregate([
+      { $group: { _id: '$status', count: { $sum: 1 } } }
+    ]);
+    const statusCounts = statusCountsRaw.map((item) => ({
+      status: item._id,
+      count: item.count
+    }));
+
+    // Aggregation for category counts
+    const categoryCountsRaw = await CompanyModel.aggregate([
+      { $group: { _id: '$category', count: { $sum: 1 } } },
+      { $sort: { count: -1 } }
+    ]);
+    const categoryCounts = categoryCountsRaw.map((item) => ({
+      category: item._id,
+      count: item.count
+    }));
+
+    // Aggregation for ratings
+    const ratingCountsRaw = await CompanyModel.aggregate([
+      { $group: { _id: '$rating', count: { $sum: 1 } } },
+      { $sort: { _id: -1 } }
+    ]);
+    const ratingCounts = ratingCountsRaw.map((item) => ({
+      rating: item._id,
+      count: item.count
+    }));
+
+    // Calculate average rating
+    const ratingDocs = await CompanyModel.find({}, 'rating');
+    const totalRatingSum = ratingDocs.reduce((acc, curr) => acc + curr.rating, 0);
+    const averageRating = total > 0 ? Number((totalRatingSum / total).toFixed(1)) : 0;
+
+    return {
+      total,
+      priority,
+      contacted,
+      applied,
+      statusCounts,
+      categoryCounts,
+      ratingCounts,
+      averageRating
+    };
+  } catch (error) {
+    return {
+      total: 0,
+      priority: 0,
+      contacted: 0,
+      applied: 0,
+      statusCounts: [],
+      categoryCounts: [],
+      ratingCounts: [],
+      averageRating: 0
+    };
+  }
+}

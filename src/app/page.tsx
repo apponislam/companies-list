@@ -5,6 +5,7 @@ import { Company } from '@/lib/database';
 import DashboardStats from '@/components/DashboardStats';
 import CompanyCard from '@/components/CompanyCard';
 import CompanyForm from '@/components/CompanyForm';
+import CompanyRow from '@/components/CompanyRow';
 import { Icons } from '@/components/Icons';
 
 const STATUS_OPTIONS: ('All' | Company['status'])[] = [
@@ -41,6 +42,7 @@ export default function DashboardPage() {
   // Drawer form states
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingCompany, setEditingCompany] = useState<Company | null>(null);
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
 
   // Sentinel ref for infinite scroll
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
@@ -242,10 +244,49 @@ export default function DashboardPage() {
               Research, prioritize, and explore target local companies for career opportunities.
             </span>
           </div>
-          <button onClick={handleAddTrigger} className="flex items-center gap-2 bg-brand-primary text-white font-semibold px-6 py-2.5 rounded-lg transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg cursor-pointer">
-            <Icons.Add size={18} />
-            Add Company
-          </button>
+          <div className="flex items-center gap-3">
+            {/* Layout switcher buttons */}
+            <div className="flex items-center bg-bg-secondary border border-border-color rounded-lg p-0.5">
+              <button
+                onClick={() => setViewMode('grid')}
+                className={`p-1.5 rounded transition-all cursor-pointer ${
+                  viewMode === 'grid'
+                    ? 'bg-brand-primary/10 text-brand-secondary'
+                    : 'text-gray-400 hover:text-white'
+                }`}
+                title="Grid Card View"
+                aria-label="Grid Card View"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <rect width="7" height="7" x="3" y="3" rx="1" />
+                  <rect width="7" height="7" x="14" y="3" rx="1" />
+                  <rect width="7" height="7" x="14" y="14" rx="1" />
+                  <rect width="7" height="7" x="3" y="14" rx="1" />
+                </svg>
+              </button>
+              <button
+                onClick={() => setViewMode('list')}
+                className={`p-1.5 rounded transition-all cursor-pointer ${
+                  viewMode === 'list'
+                    ? 'bg-brand-primary/10 text-brand-secondary'
+                    : 'text-gray-400 hover:text-white'
+                }`}
+                title="Compact List View"
+                aria-label="Compact List View"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="3" x2="21" y1="6" y2="6" />
+                  <line x1="3" x2="21" y1="12" y2="12" />
+                  <line x1="3" x2="21" y1="18" y2="18" />
+                </svg>
+              </button>
+            </div>
+
+            <button onClick={handleAddTrigger} className="flex items-center gap-2 bg-brand-primary text-white font-semibold px-6 py-2.5 rounded-lg transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg cursor-pointer">
+              <Icons.Add size={18} />
+              Add Company
+            </button>
+          </div>
         </div>
 
         {/* Dashboard Analytics Bar */}
@@ -326,16 +367,29 @@ export default function DashboardPage() {
           </div>
         ) : companies.length > 0 ? (
           <>
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mb-8">
-              {companies.map((company) => (
-                <CompanyCard
-                  key={company.id}
-                  company={company}
-                  onEdit={handleEditTrigger}
-                  onDelete={handleDeleteCompany}
-                />
-              ))}
-            </div>
+            {viewMode === 'grid' ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mb-8">
+                {companies.map((company) => (
+                  <CompanyCard
+                    key={company.id}
+                    company={company}
+                    onEdit={handleEditTrigger}
+                    onDelete={handleDeleteCompany}
+                  />
+                ))}
+              </div>
+            ) : (
+              <div className="flex flex-col gap-3 mb-8">
+                {companies.map((company) => (
+                  <CompanyRow
+                    key={company.id}
+                    company={company}
+                    onEdit={handleEditTrigger}
+                    onDelete={handleDeleteCompany}
+                  />
+                ))}
+              </div>
+            )}
             
             {/* Infinite Scroll Sentinel element */}
             <div ref={loadMoreRef} className="flex justify-center items-center min-h-[80px] mt-6 pb-8 text-gray-400">

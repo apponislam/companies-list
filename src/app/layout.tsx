@@ -17,6 +17,8 @@ export const metadata: Metadata = {
   description: "Track and organize target local companies, locations, contact info, and socials in one premium dashboard.",
 };
 
+import Navigation from "@/components/Navigation";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -24,7 +26,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
-      <body>{children}</body>
+      <body className="bg-bg-primary text-gray-100 min-h-screen flex flex-col">
+        <Navigation />
+        {children}
+      </body>
     </html>
   );
 }
