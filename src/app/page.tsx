@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { Company } from '@/lib/database';
 import styles from './page.module.css';
 import DashboardStats from '@/components/DashboardStats';
@@ -43,6 +43,9 @@ export default function DashboardPage() {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingCompany, setEditingCompany] = useState<Company | null>(null);
 
+  // Sentinel ref for infinite scroll
+  const loadMoreRef = useRef<HTMLDivElement | null>(null);
+
   // Debounce search input to avoid hitting database on every keystroke
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -56,11 +59,11 @@ export default function DashboardPage() {
   }, [searchInputValue]);
 
   // Fetch companies matching active page & filters
-  const fetchCompanies = async () => {
+  const fetchCompanies = async (targetPage = page, isReset = false) => {
     try {
       setIsLoading(true);
       const params = new URLSearchParams({
-        page: String(page),
+        page: String(targetPage),
         limit: String(limit),
         search: searchQuery,
         status: selectedStatus,
@@ -71,7 +74,14 @@ export default function DashboardPage() {
       const res = await fetch(`/api/companies?${params.toString()}`, { cache: 'no-store' });
       if (res.ok) {
         const data = await res.json();
-        setCompanies(data.companies || []);
+        const newCompanies = data.companies || [];
+        
+        if (targetPage === 1 || isReset) {
+          setCompanies(newCompanies);
+        } else {
+          setCompanies((prev) => [...prev, ...newCompanies]);
+        }
+        
         setTotalPages(data.pages || 1);
         setTotalCount(data.total || 0);
         setStats(data.stats || null);
@@ -88,10 +98,44 @@ export default function DashboardPage() {
     }
   };
 
-  // Re-fetch when page or filter criteria change
+  // Re-fetch only when page changes (appending mode)
   useEffect(() => {
-    fetchCompanies();
-  }, [page, searchQuery, selectedStatus, selectedCategory, minRating]);
+    if (page > 1) {
+      fetchCompanies(page, false);
+    }
+  }, [page]);
+
+  // Re-fetch and reset when filters or search query change
+  useEffect(() => {
+    setPage(1);
+    fetchCompanies(1, true);
+  }, [searchQuery, selectedStatus, selectedCategory, minRating]);
+
+  // Intersection Observer for scroll-based pagination triggers
+  useEffect(() => {
+    const sentinel = loadMoreRef.current;
+    if (!sentinel) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        if (entry.isIntersecting && page < totalPages && !isLoading) {
+          setPage((prev) => prev + 1);
+        }
+      },
+      {
+        rootMargin: '100px', // Preloads more items when user is 100px away from bottom
+      }
+    );
+
+    observer.observe(sentinel);
+
+    return () => {
+      if (sentinel) {
+        observer.unobserve(sentinel);
+      }
+    };
+  }, [page, totalPages, isLoading]);
 
   // Form submit (Handles both ADD and EDIT operations)
   const handleFormSubmit = async (formData: Omit<Company, 'id' | 'createdAt' | 'updatedAt'>) => {
@@ -122,8 +166,12 @@ export default function DashboardPage() {
           setSelectedCategory('All');
           setMinRating(0);
           setPage(1);
+          await fetchCompanies(1, true);
+        } else {
+          // Reset to page 1 and reload edited results
+          setPage(1);
+          await fetchCompanies(1, true);
         }
-        await fetchCompanies();
       } else {
         throw new Error('Failed to save company');
       }
@@ -141,12 +189,9 @@ export default function DashboardPage() {
       });
 
       if (res.ok) {
-        // If we deleted the last item on the page, go back a page
-        if (companies.length === 1 && page > 1) {
-          setPage((prev) => prev - 1);
-        } else {
-          await fetchCompanies();
-        }
+        // Reset and fetch from page 1
+        setPage(1);
+        await fetchCompanies(1, true);
       } else {
         alert('Failed to delete the company profile.');
       }
@@ -271,7 +316,7 @@ export default function DashboardPage() {
         </div>
 
         {/* Main Grid & Pagination */}
-        {isLoading ? (
+        {isLoading && page === 1 ? (
           <div className={styles.loaderContainer}>
             <div className={styles.spinner}></div>
             <p>Loading companies data...</p>
@@ -289,30 +334,20 @@ export default function DashboardPage() {
               ))}
             </div>
             
-            {/* Pagination Controls */}
-            {totalPages > 1 && (
-              <div className={styles.paginationContainer}>
-                <button
-                  onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
-                  disabled={page === 1}
-                  className={styles.pageBtn}
-                  title="Previous Page"
-                >
-                  &larr; Previous
-                </button>
-                <span className={styles.pageInfo}>
-                  Page {page} of {totalPages} ({totalCount} total results)
-                </span>
-                <button
-                  onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
-                  disabled={page === totalPages}
-                  className={styles.pageBtn}
-                  title="Next Page"
-                >
-                  Next &rarr;
-                </button>
-              </div>
-            )}
+            {/* Infinite Scroll Sentinel element */}
+            <div ref={loadMoreRef} className={styles.sentinel}>
+              {isLoading && page > 1 && (
+                <div className={styles.sentinelSpinner}>
+                  <div className={styles.spinnerMini}></div>
+                  <span>Loading more companies...</span>
+                </div>
+              )}
+              {!isLoading && page === totalPages && totalCount > 0 && (
+                <p className={styles.caughtUpText}>
+                  You have viewed all {totalCount} target companies.
+                </p>
+              )}
+            </div>
           </>
         ) : (
           <div className={styles.emptyState}>
