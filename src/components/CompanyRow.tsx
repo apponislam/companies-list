@@ -47,13 +47,13 @@ export default function CompanyRow({ company, onEdit, onDelete }: CompanyRowProp
             href={company.website}
             target="_blank"
             rel="noopener noreferrer"
-            className="font-bold text-white hover:text-brand-secondary transition-colors truncate"
+            className="font-bold text-text-primary hover:text-brand-secondary transition-colors truncate"
             title={`Visit Website: ${company.website}`}
           >
             {company.name}
           </a>
         ) : (
-          <span className="font-bold text-white truncate">{company.name}</span>
+          <span className="font-bold text-text-primary truncate">{company.name}</span>
         )}
         <span className="text-[9px] font-bold px-2 py-0.5 rounded bg-brand-primary/10 text-brand-secondary border border-brand-primary/15 whitespace-nowrap uppercase tracking-wider">
           {company.category}
@@ -67,11 +67,11 @@ export default function CompanyRow({ company, onEdit, onDelete }: CompanyRowProp
             <Icons.Star
               key={idx}
               size={12}
-              className={idx < company.rating ? 'text-target fill-target' : 'text-gray-700'}
+              className={idx < company.rating ? 'text-target fill-target' : 'text-text-secondary/30'}
             />
           ))}
         </div>
-        <span className="text-gray-400 truncate hidden sm:inline" title={company.address}>
+        <span className="text-text-secondary truncate hidden sm:inline" title={company.address}>
           {company.address}
         </span>
       </div>
@@ -88,7 +88,7 @@ export default function CompanyRow({ company, onEdit, onDelete }: CompanyRowProp
         {company.email ? (
           <button
             onClick={(e) => handleCopy(e, company.email!, 'email')}
-            className="flex items-center justify-center w-7 h-7 rounded bg-bg-primary/50 text-gray-400 hover:text-white hover:bg-white/5 relative cursor-pointer"
+            className="flex items-center justify-center w-7 h-7 rounded bg-bg-primary/50 text-text-secondary hover:text-text-primary hover:bg-bg-secondary/40 relative cursor-pointer"
             title={`Copy Email: ${company.email}`}
           >
             <Icons.Email size={13} />
@@ -105,7 +105,7 @@ export default function CompanyRow({ company, onEdit, onDelete }: CompanyRowProp
         {company.phone ? (
           <button
             onClick={(e) => handleCopy(e, company.phone!, 'phone')}
-            className="flex items-center justify-center w-7 h-7 rounded bg-bg-primary/50 text-gray-400 hover:text-white hover:bg-white/5 relative cursor-pointer"
+            className="flex items-center justify-center w-7 h-7 rounded bg-bg-primary/50 text-text-secondary hover:text-text-primary hover:bg-bg-secondary/40 relative cursor-pointer"
             title={`Copy Phone: ${company.phone}`}
           >
             <Icons.Phone size={13} />
@@ -127,7 +127,7 @@ export default function CompanyRow({ company, onEdit, onDelete }: CompanyRowProp
             <span className="text-[10px] font-bold text-nothiring">Delete?</span>
             <button
               onClick={() => setIsConfirmingDelete(false)}
-              className="text-[10px] px-2 py-1 rounded bg-bg-primary border border-border-color text-gray-400 hover:text-white cursor-pointer"
+              className="text-[10px] px-2 py-1 rounded bg-bg-primary border border-border-color text-text-secondary hover:text-text-primary cursor-pointer"
             >
               No
             </button>
@@ -145,7 +145,7 @@ export default function CompanyRow({ company, onEdit, onDelete }: CompanyRowProp
           <>
             <button
               onClick={() => onEdit(company)}
-              className="p-1.5 rounded border border-brand-primary/20 bg-brand-primary/10 text-white hover:bg-brand-primary hover:border-brand-primary cursor-pointer transition-colors"
+              className="p-1.5 rounded border border-brand-primary/20 bg-brand-primary/10 text-brand-primary hover:bg-brand-primary hover:text-white cursor-pointer transition-colors"
               title="Edit Profile"
             >
               <Icons.Edit size={12} />

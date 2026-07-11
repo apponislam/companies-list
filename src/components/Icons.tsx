@@ -95,6 +95,24 @@ export const Icons = {
       <path d="M12 6H8a2 2 0 0 0-2 2v3c0 1.1-.9 2-2 2H3.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5H6c1.1 0 2 .9 2 2v3a2 2 0 0 0 2 2h4" />
       <line x1="12" y1="18" x2="12" y2="22" />
     </svg>
+  ),
+  Sun: ({ size = 20, ...props }: IconProps) => (
+    <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+      <circle cx="12" cy="12" r="4" />
+      <path d="M12 2v2" />
+      <path d="M12 20v2" />
+      <path d="M4.93 4.93l1.41 1.41" />
+      <path d="M17.66 17.66l1.41 1.41" />
+      <path d="M2 12h2" />
+      <path d="M20 12h2" />
+      <path d="M6.34 17.66l-1.41 1.41" />
+      <path d="M19.07 4.93l-1.41 1.41" />
+    </svg>
+  ),
+  Moon: ({ size = 20, ...props }: IconProps) => (
+    <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+      <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
+    </svg>
   )
 };
 export type IconName = keyof typeof Icons;

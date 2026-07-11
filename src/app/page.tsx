@@ -236,10 +236,10 @@ export default function DashboardPage() {
         {/* Header */}
         <div className="flex justify-between items-center mb-8 flex-wrap gap-6">
           <div className="flex flex-col gap-1">
-            <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400 tracking-tight">
+            <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-brand-primary to-brand-secondary tracking-tight">
               Company Directory
             </h1>
-            <span className="text-sm text-gray-400 font-medium">
+            <span className="text-sm text-text-secondary font-medium">
               Research, prioritize, and explore target local companies for career opportunities.
             </span>
           </div>
@@ -251,7 +251,7 @@ export default function DashboardPage() {
                 className={`p-1.5 rounded transition-all cursor-pointer ${
                   viewMode === 'grid'
                     ? 'bg-brand-primary/10 text-brand-secondary'
-                    : 'text-gray-400 hover:text-white'
+                    : 'text-text-secondary hover:text-text-primary'
                 }`}
                 title="Grid Card View"
                 aria-label="Grid Card View"
@@ -268,7 +268,7 @@ export default function DashboardPage() {
                 className={`p-1.5 rounded transition-all cursor-pointer ${
                   viewMode === 'list'
                     ? 'bg-brand-primary/10 text-brand-secondary'
-                    : 'text-gray-400 hover:text-white'
+                    : 'text-text-secondary hover:text-text-primary'
                 }`}
                 title="Compact List View"
                 aria-label="Compact List View"
@@ -293,7 +293,7 @@ export default function DashboardPage() {
           {/* Row 1: Search & Dropdowns */}
           <div className="flex gap-4 flex-wrap">
             <div className="relative flex-1 min-w-[260px]">
-              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none">
+              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-text-secondary/60 pointer-events-none">
                 <Icons.Search size={18} />
               </span>
               <input
@@ -301,7 +301,7 @@ export default function DashboardPage() {
                 placeholder="Search companies by name, location, stack, or notes..."
                 value={searchInputValue}
                 onChange={(e) => setSearchInputValue(e.target.value)}
-                className="w-full bg-bg-primary border border-border-color rounded-lg pl-11 pr-4 py-2.5 text-sm text-white placeholder-gray-500 transition-all focus:outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/15"
+                className="w-full bg-bg-primary border border-border-color rounded-lg pl-11 pr-4 py-2.5 text-sm text-text-primary placeholder-text-secondary/50 transition-all focus:outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/15"
               />
             </div>
 
@@ -309,7 +309,7 @@ export default function DashboardPage() {
             <select
               value={selectedCategory}
               onChange={(e) => handleCategoryChange(e.target.value)}
-              className="bg-bg-primary border border-border-color rounded-lg px-4 py-2.5 text-sm text-white min-w-[180px] transition-all focus:outline-none focus:border-brand-primary cursor-pointer"
+              className="bg-bg-primary border border-border-color rounded-lg px-4 py-2.5 text-sm text-text-primary min-w-[180px] transition-all focus:outline-none focus:border-brand-primary cursor-pointer"
               title="Filter by Industry Category"
             >
               <option value="All">All Categories</option>
@@ -326,7 +326,7 @@ export default function DashboardPage() {
             <select
               value={minRating}
               onChange={(e) => handleRatingChange(Number(e.target.value))}
-              className="bg-bg-primary border border-border-color rounded-lg px-4 py-2.5 text-sm text-white min-w-[180px] transition-all focus:outline-none focus:border-brand-primary cursor-pointer"
+              className="bg-bg-primary border border-border-color rounded-lg px-4 py-2.5 text-sm text-text-primary min-w-[180px] transition-all focus:outline-none focus:border-brand-primary cursor-pointer"
               title="Filter by Minimum Rating"
             >
               <option value={0}>All Ratings</option>
@@ -340,12 +340,12 @@ export default function DashboardPage() {
 
           {/* Row 2: Status Pills */}
           <div className="flex gap-2 flex-wrap items-center">
-            <span className="text-xs font-bold text-gray-400 uppercase tracking-wider mr-2">Filter by Status:</span>
+            <span className="text-xs font-bold text-text-secondary uppercase tracking-wider mr-2">Filter by Status:</span>
             {STATUS_OPTIONS.map((status) => (
               <button
                 key={status}
                 onClick={() => handleStatusChange(status)}
-                className={`text-xs font-semibold px-4 py-1.5 rounded-full border border-border-color bg-transparent text-gray-400 transition-all duration-150 hover:bg-white/5 hover:text-white cursor-pointer ${
+                className={`text-xs font-semibold px-4 py-1.5 rounded-full border border-border-color bg-transparent text-text-secondary transition-all duration-150 hover:bg-bg-tertiary hover:text-text-primary cursor-pointer ${
                   selectedStatus === status ? 'bg-brand-primary text-white border-brand-primary hover:bg-brand-primary/90' : ''
                 }`}
               >
@@ -357,7 +357,7 @@ export default function DashboardPage() {
 
         {/* Main Grid & Pagination */}
         {isLoading && page === 1 ? (
-          <div className="flex flex-col items-center justify-center min-h-[300px] gap-4 text-gray-400">
+          <div className="flex flex-col items-center justify-center min-h-[300px] gap-4 text-text-secondary">
             <div className="w-10 h-10 border-3 border-brand-primary/10 rounded-full border-t-brand-primary animate-spin"></div>
             <p>Loading companies data...</p>
           </div>
@@ -388,7 +388,7 @@ export default function DashboardPage() {
             )}
             
             {/* Infinite Scroll Sentinel element */}
-            <div ref={loadMoreRef} className="flex justify-center items-center min-h-[80px] mt-6 pb-8 text-gray-400">
+            <div ref={loadMoreRef} className="flex justify-center items-center min-h-[80px] mt-6 pb-8 text-text-secondary">
               {isLoading && page > 1 && (
                 <div className="flex items-center gap-3 text-sm">
                   <div className="w-5 h-5 border-2 border-brand-primary/10 rounded-full border-t-brand-primary animate-spin"></div>
@@ -403,16 +403,16 @@ export default function DashboardPage() {
             </div>
           </>
         ) : (
-          <div className="bg-bg-secondary border border-dashed border-border-color rounded-2xl p-16 text-center flex flex-col items-center justify-center gap-5 text-gray-400 animate-fade-in">
+          <div className="bg-bg-secondary border border-dashed border-border-color rounded-2xl p-16 text-center flex flex-col items-center justify-center gap-5 text-text-secondary animate-fade-in">
             <Icons.Website size={48} />
-            <h2 className="text-xl font-bold text-white">No Target Companies Found</h2>
+            <h2 className="text-xl font-bold text-text-primary">No Target Companies Found</h2>
             <p className="max-w-[400px] text-sm leading-relaxed mb-2">
               {stats?.total === 0
                 ? "Your directory is currently empty. Click the button below to add your first company details."
                 : "No companies match your active filters or search criteria. Try modifying your search query or reset filters."}
             </p>
             {stats?.total === 0 ? (
-              <button onClick={handleAddTrigger} className="flex items-center gap-2 bg-bg-tertiary text-white border border-border-color font-semibold px-6 py-2.5 rounded-lg transition-all duration-200 hover:bg-brand-primary hover:border-brand-primary hover:-translate-y-0.5 cursor-pointer">
+              <button onClick={handleAddTrigger} className="flex items-center gap-2 bg-bg-tertiary text-brand-primary border border-border-color font-semibold px-6 py-2.5 rounded-lg transition-all duration-200 hover:bg-brand-primary hover:text-white hover:border-brand-primary hover:-translate-y-0.5 cursor-pointer">
                 <Icons.Add size={18} />
                 Create Company Profile
               </button>
@@ -426,7 +426,7 @@ export default function DashboardPage() {
                   setMinRating(0);
                   setPage(1);
                 }}
-                className="flex items-center gap-2 bg-bg-tertiary text-white border border-border-color font-semibold px-6 py-2.5 rounded-lg transition-all duration-200 hover:bg-brand-primary hover:border-brand-primary hover:-translate-y-0.5 cursor-pointer"
+                className="flex items-center gap-2 bg-bg-tertiary text-brand-primary border border-border-color font-semibold px-6 py-2.5 rounded-lg transition-all duration-200 hover:bg-brand-primary hover:text-white hover:border-brand-primary hover:-translate-y-0.5 cursor-pointer"
               >
                 Reset Filters
               </button>

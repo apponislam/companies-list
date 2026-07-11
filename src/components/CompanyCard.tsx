@@ -47,7 +47,7 @@ export default function CompanyCard({ company, onEdit, onDelete }: CompanyCardPr
       {/* Top Header */}
       <div className="flex justify-between items-start gap-4">
         <div className="flex flex-col gap-1 max-w-[70%]">
-          <h3 className="text-lg font-bold text-white truncate" title={company.name}>
+          <h3 className="text-lg font-bold text-text-primary truncate" title={company.name}>
             {company.name}
           </h3>
           <span className="text-[10px] font-semibold text-brand-secondary uppercase tracking-wider">
@@ -61,8 +61,8 @@ export default function CompanyCard({ company, onEdit, onDelete }: CompanyCardPr
 
       {/* Address & Rating */}
       <div className="flex flex-col gap-3">
-        <div className="flex items-start gap-2 text-gray-300 text-sm">
-          <span className="mt-0.5 text-gray-500 shrink-0">
+        <div className="flex items-start gap-2 text-text-primary/95 text-sm">
+          <span className="mt-0.5 text-text-secondary shrink-0">
             <Icons.Pin size={16} />
           </span>
           <span className="line-clamp-2" title={company.address}>
@@ -71,12 +71,12 @@ export default function CompanyCard({ company, onEdit, onDelete }: CompanyCardPr
         </div>
 
         {/* Priority Rating */}
-        <div className="flex gap-0.5 text-gray-600" title={`Priority: ${company.rating}/5 stars`}>
+        <div className="flex gap-0.5 text-text-secondary/30" title={`Priority: ${company.rating}/5 stars`}>
           {Array.from({ length: 5 }).map((_, idx) => (
             <Icons.Star
               key={idx}
               size={16}
-              className={idx < company.rating ? 'text-target fill-target' : ''}
+              className={idx < company.rating ? 'text-target fill-target' : 'fill-current'}
             />
           ))}
         </div>
@@ -84,17 +84,17 @@ export default function CompanyCard({ company, onEdit, onDelete }: CompanyCardPr
 
       {/* Contact Panel (Only if Email or Phone is provided) */}
       {(company.email || company.phone) && (
-        <div className="bg-bg-tertiary rounded-lg p-3 flex flex-col gap-2 text-xs border border-white/5">
+        <div className="bg-bg-tertiary rounded-lg p-3 flex flex-col gap-2 text-xs border border-border-color/10">
           {company.email && (
-            <div className="flex items-center justify-between gap-2 text-gray-300">
+            <div className="flex items-center justify-between gap-2 text-text-primary/90">
               <div className="flex items-center gap-2 truncate max-w-[85%]" title={company.email}>
-                <span className="text-gray-500 shrink-0">
+                <span className="text-text-secondary shrink-0">
                   <Icons.Email size={14} />
                 </span>
                 <span className="truncate">{company.email}</span>
               </div>
               <button
-                className="bg-transparent text-gray-500 p-1 rounded transition-colors hover:text-white hover:bg-white/5 flex items-center justify-center relative cursor-pointer"
+                className="bg-transparent text-text-secondary p-1 rounded transition-colors hover:text-text-primary hover:bg-bg-secondary/40 flex items-center justify-center relative cursor-pointer"
                 onClick={() => handleCopy(company.email!, 'email')}
                 title="Copy Email"
               >
@@ -109,15 +109,15 @@ export default function CompanyCard({ company, onEdit, onDelete }: CompanyCardPr
           )}
 
           {company.phone && (
-            <div className="flex items-center justify-between gap-2 text-gray-300">
+            <div className="flex items-center justify-between gap-2 text-text-primary/90">
               <div className="flex items-center gap-2 truncate max-w-[85%]" title={company.phone}>
-                <span className="text-gray-500 shrink-0">
+                <span className="text-text-secondary shrink-0">
                   <Icons.Phone size={14} />
                 </span>
                 <span className="truncate">{company.phone}</span>
               </div>
               <button
-                className="bg-transparent text-gray-500 p-1 rounded transition-colors hover:text-white hover:bg-white/5 flex items-center justify-center relative cursor-pointer"
+                className="bg-transparent text-text-secondary p-1 rounded transition-colors hover:text-text-primary hover:bg-bg-secondary/40 flex items-center justify-center relative cursor-pointer"
                 onClick={() => handleCopy(company.phone!, 'phone')}
                 title="Copy Phone Number"
               >
@@ -140,7 +140,7 @@ export default function CompanyCard({ company, onEdit, onDelete }: CompanyCardPr
             href={company.website}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-center w-9 h-9 rounded-full bg-bg-tertiary text-gray-400 border border-border-color transition-all duration-200 hover:-translate-y-0.5 hover:text-white hover:bg-brand-primary hover:border-brand-primary"
+            className="flex items-center justify-center w-9 h-9 rounded-full bg-bg-tertiary text-text-secondary border border-border-color transition-all duration-200 hover:-translate-y-0.5 hover:text-white hover:bg-brand-primary hover:border-brand-primary"
             title="Visit Website"
           >
             <Icons.Website size={18} />
@@ -152,7 +152,7 @@ export default function CompanyCard({ company, onEdit, onDelete }: CompanyCardPr
             href={company.mapLink}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-center w-9 h-9 rounded-full bg-bg-tertiary text-gray-400 border border-border-color transition-all duration-200 hover:-translate-y-0.5 hover:text-white hover:bg-[#ea4335] hover:border-[#ea4335]"
+            className="flex items-center justify-center w-9 h-9 rounded-full bg-bg-tertiary text-text-secondary border border-border-color transition-all duration-200 hover:-translate-y-0.5 hover:text-white hover:bg-[#ea4335] hover:border-[#ea4335]"
             title="Google Maps Location"
           >
             <Icons.Map size={18} />
@@ -164,7 +164,7 @@ export default function CompanyCard({ company, onEdit, onDelete }: CompanyCardPr
             href={company.linkedin}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-center w-9 h-9 rounded-full bg-bg-tertiary text-gray-400 border border-border-color transition-all duration-200 hover:-translate-y-0.5 hover:text-white hover:bg-[#0a66c2] hover:border-[#0a66c2]"
+            className="flex items-center justify-center w-9 h-9 rounded-full bg-bg-tertiary text-text-secondary border border-border-color transition-all duration-200 hover:-translate-y-0.5 hover:text-white hover:bg-[#0a66c2] hover:border-[#0a66c2]"
             title="LinkedIn Profile"
           >
             <Icons.LinkedIn size={18} />
@@ -176,7 +176,7 @@ export default function CompanyCard({ company, onEdit, onDelete }: CompanyCardPr
             href={company.facebook}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-center w-9 h-9 rounded-full bg-bg-tertiary text-gray-400 border border-border-color transition-all duration-200 hover:-translate-y-0.5 hover:text-white hover:bg-[#1877f2] hover:border-[#1877f2]"
+            className="flex items-center justify-center w-9 h-9 rounded-full bg-bg-tertiary text-text-secondary border border-border-color transition-all duration-200 hover:-translate-y-0.5 hover:text-white hover:bg-[#1877f2] hover:border-[#1877f2]"
             title="Facebook Page"
           >
             <Icons.Facebook size={18} />
@@ -187,8 +187,8 @@ export default function CompanyCard({ company, onEdit, onDelete }: CompanyCardPr
       {/* Notes Preview (If exists) */}
       {company.notes && (
         <div className="border-t border-dashed border-border-color pt-3 flex flex-col gap-1">
-          <span className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">Notes</span>
-          <div className="text-xs text-gray-300 leading-relaxed pre-wrap max-h-20 overflow-y-auto pr-1 scrollbar-thin">
+          <span className="text-[10px] font-bold text-text-secondary uppercase tracking-wider">Notes</span>
+          <div className="text-xs text-text-primary/80 leading-relaxed pre-wrap max-h-20 overflow-y-auto pr-1 scrollbar-thin">
             {company.notes}
           </div>
         </div>
@@ -202,7 +202,7 @@ export default function CompanyCard({ company, onEdit, onDelete }: CompanyCardPr
             <div className="flex gap-2">
               <button
                 onClick={() => setIsConfirmingDelete(false)}
-                className="text-xs font-semibold px-2.5 py-1.5 rounded-lg border border-border-color text-gray-400 hover:bg-white/5 hover:text-white transition-all cursor-pointer"
+                className="text-xs font-semibold px-2.5 py-1.5 rounded-lg border border-border-color text-text-secondary hover:bg-bg-tertiary hover:text-text-primary transition-all cursor-pointer"
               >
                 Cancel
               </button>
@@ -222,14 +222,14 @@ export default function CompanyCard({ company, onEdit, onDelete }: CompanyCardPr
           <>
             <button
               onClick={() => onEdit(company)}
-              className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg border bg-brand-primary/10 text-white border-brand-primary/20 hover:bg-brand-primary hover:border-brand-primary transition-all duration-200 cursor-pointer"
+              className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg border bg-brand-primary/10 text-brand-primary border-brand-primary/20 hover:bg-brand-primary hover:text-white transition-all duration-200 cursor-pointer"
             >
               <Icons.Edit size={14} />
               Edit
             </button>
             <button
               onClick={() => setIsConfirmingDelete(true)}
-              className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg border bg-nothiring/10 text-nothiring border-nothiring/20 hover:bg-nothiring hover:border-nothiring hover:text-white transition-all duration-200 cursor-pointer"
+              className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg border bg-nothiring/10 text-nothiring border-nothiring/20 hover:bg-nothiring hover:text-white transition-all duration-200 cursor-pointer"
             >
               <Icons.Delete size={14} />
               Delete

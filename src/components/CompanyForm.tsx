@@ -147,8 +147,8 @@ export default function CompanyForm({ company, isOpen, onClose, onSubmit }: Comp
         
         {/* Drawer Header */}
         <div className="p-6 border-b border-border-color flex justify-between items-center">
-          <h2 className="text-xl font-bold text-white">{company ? 'Edit Company Profile' : 'Add Target Company'}</h2>
-          <button className="text-gray-400 bg-transparent w-8 h-8 rounded-full flex items-center justify-center transition-colors hover:bg-bg-tertiary hover:text-white cursor-pointer" onClick={onClose} aria-label="Close form">
+          <h2 className="text-xl font-bold text-text-primary">{company ? 'Edit Company Profile' : 'Add Target Company'}</h2>
+          <button className="text-text-secondary bg-transparent w-8 h-8 rounded-full flex items-center justify-center transition-colors hover:bg-bg-tertiary hover:text-text-primary cursor-pointer" onClick={onClose} aria-label="Close form">
             <Icons.Close size={20} />
           </button>
         </div>
@@ -163,12 +163,12 @@ export default function CompanyForm({ company, isOpen, onClose, onSubmit }: Comp
 
           {/* Company Name */}
           <div className="flex flex-col gap-2">
-            <label className="text-xs font-semibold text-gray-300 flex items-center gap-1">
+            <label className="text-xs font-semibold text-text-primary/95 flex items-center gap-1">
               Company Name <span className="text-nothiring">*</span>
             </label>
             <input
               type="text"
-              className="w-full bg-bg-primary border border-border-color rounded-lg px-4 py-2.5 text-sm text-white placeholder-gray-500 transition-all focus:outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/15"
+              className="w-full bg-bg-primary border border-border-color rounded-lg px-4 py-2.5 text-sm text-text-primary placeholder-text-secondary/50 transition-all focus:outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/15"
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="e.g. Google Maps, TechSoft Ltd."
@@ -179,16 +179,16 @@ export default function CompanyForm({ company, isOpen, onClose, onSubmit }: Comp
           {/* Category & Status */}
           <div className="grid grid-cols-2 gap-4">
             <div className="flex flex-col gap-2">
-              <label className="text-xs font-semibold text-gray-300 flex items-center gap-1">
+              <label className="text-xs font-semibold text-text-primary/95 flex items-center gap-1">
                 Category <span className="text-nothiring">*</span>
               </label>
               <select
-                className="w-full bg-bg-primary border border-border-color rounded-lg px-4 py-2.5 text-sm text-white placeholder-gray-500 transition-all focus:outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/15"
+                className="w-full bg-bg-primary border border-border-color rounded-lg px-4 py-2.5 text-sm text-text-primary placeholder-text-secondary/50 transition-all focus:outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/15"
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
               >
                 {CATEGORIES.map((cat) => (
-                  <option key={cat} value={cat}>
+                  <option className="bg-bg-secondary text-text-primary" key={cat} value={cat}>
                     {cat}
                   </option>
                 ))}
@@ -196,18 +196,18 @@ export default function CompanyForm({ company, isOpen, onClose, onSubmit }: Comp
             </div>
 
             <div className="flex flex-col gap-2">
-              <label className="text-xs font-semibold text-gray-300 flex items-center gap-1">Interest Status</label>
+              <label className="text-xs font-semibold text-text-primary/95 flex items-center gap-1">Interest Status</label>
               <select
-                className="w-full bg-bg-primary border border-border-color rounded-lg px-4 py-2.5 text-sm text-white placeholder-gray-500 transition-all focus:outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/15"
+                className="w-full bg-bg-primary border border-border-color rounded-lg px-4 py-2.5 text-sm text-text-primary placeholder-text-secondary/50 transition-all focus:outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/15"
                 value={status}
                 onChange={(e) => setStatus(e.target.value as Company['status'])}
               >
-                <option value="To Explore">To Explore</option>
-                <option value="Target / Save">Target / Save</option>
-                <option value="Contacted">Contacted</option>
-                <option value="In Dialogue">In Dialogue</option>
-                <option value="Applied">Applied</option>
-                <option value="Not Hiring">Not Hiring</option>
+                <option className="bg-bg-secondary text-text-primary" value="To Explore">To Explore</option>
+                <option className="bg-bg-secondary text-text-primary" value="Target / Save">Target / Save</option>
+                <option className="bg-bg-secondary text-text-primary" value="Contacted">Contacted</option>
+                <option className="bg-bg-secondary text-text-primary" value="In Dialogue">In Dialogue</option>
+                <option className="bg-bg-secondary text-text-primary" value="Applied">Applied</option>
+                <option className="bg-bg-secondary text-text-primary" value="Not Hiring">Not Hiring</option>
               </select>
             </div>
           </div>
@@ -215,12 +215,12 @@ export default function CompanyForm({ company, isOpen, onClose, onSubmit }: Comp
           {/* Custom Category */}
           {category === 'Other' && (
             <div className="flex flex-col gap-2">
-              <label className="text-xs font-semibold text-gray-300 flex items-center gap-1">
+              <label className="text-xs font-semibold text-text-primary/95 flex items-center gap-1">
                 Custom Category <span className="text-nothiring">*</span>
               </label>
               <input
                 type="text"
-                className="w-full bg-bg-primary border border-border-color rounded-lg px-4 py-2.5 text-sm text-white placeholder-gray-500 transition-all focus:outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/15"
+                className="w-full bg-bg-primary border border-border-color rounded-lg px-4 py-2.5 text-sm text-text-primary placeholder-text-secondary/50 transition-all focus:outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/15"
                 value={customCategory}
                 onChange={(e) => setCustomCategory(e.target.value)}
                 placeholder="e.g. AI Laboratory, FinTech startup"
@@ -231,12 +231,12 @@ export default function CompanyForm({ company, isOpen, onClose, onSubmit }: Comp
 
           {/* Physical Address */}
           <div className="flex flex-col gap-2">
-            <label className="text-xs font-semibold text-gray-300 flex items-center gap-1">
+            <label className="text-xs font-semibold text-text-primary/95 flex items-center gap-1">
               Location/Address <span className="text-nothiring">*</span>
             </label>
             <input
               type="text"
-              className="w-full bg-bg-primary border border-border-color rounded-lg px-4 py-2.5 text-sm text-white placeholder-gray-500 transition-all focus:outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/15"
+              className="w-full bg-bg-primary border border-border-color rounded-lg px-4 py-2.5 text-sm text-text-primary placeholder-text-secondary/50 transition-all focus:outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/15"
               value={address}
               onChange={(e) => setAddress(e.target.value)}
               placeholder="e.g. Sector 11, Uttara, Dhaka or Remote"
@@ -246,12 +246,12 @@ export default function CompanyForm({ company, isOpen, onClose, onSubmit }: Comp
 
           {/* Google Maps Link */}
           <div className="flex flex-col gap-2">
-            <label className="text-xs font-semibold text-gray-300 flex items-center gap-1">
+            <label className="text-xs font-semibold text-text-primary/95 flex items-center gap-1">
               Google Maps URL <span className="text-nothiring">*</span>
             </label>
             <input
               type="url"
-              className="w-full bg-bg-primary border border-border-color rounded-lg px-4 py-2.5 text-sm text-white placeholder-gray-500 transition-all focus:outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/15"
+              className="w-full bg-bg-primary border border-border-color rounded-lg px-4 py-2.5 text-sm text-text-primary placeholder-text-secondary/50 transition-all focus:outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/15"
               value={mapLink}
               onChange={(e) => setMapLink(e.target.value)}
               placeholder="https://maps.google.com/?q=..."
@@ -261,12 +261,12 @@ export default function CompanyForm({ company, isOpen, onClose, onSubmit }: Comp
 
           {/* Website Link */}
           <div className="flex flex-col gap-2">
-            <label className="text-xs font-semibold text-gray-300 flex items-center gap-1">
+            <label className="text-xs font-semibold text-text-primary/95 flex items-center gap-1">
               Website URL <span className="text-nothiring">*</span>
             </label>
             <input
               type="url"
-              className="w-full bg-bg-primary border border-border-color rounded-lg px-4 py-2.5 text-sm text-white placeholder-gray-500 transition-all focus:outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/15"
+              className="w-full bg-bg-primary border border-border-color rounded-lg px-4 py-2.5 text-sm text-text-primary placeholder-text-secondary/50 transition-all focus:outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/15"
               value={website}
               onChange={(e) => setWebsite(e.target.value)}
               placeholder="https://example.com"
@@ -277,10 +277,10 @@ export default function CompanyForm({ company, isOpen, onClose, onSubmit }: Comp
           {/* Social Profiles */}
           <div className="grid grid-cols-2 gap-4">
             <div className="flex flex-col gap-2">
-              <label className="text-xs font-semibold text-gray-300 flex items-center gap-1">Facebook URL</label>
+              <label className="text-xs font-semibold text-text-primary/95 flex items-center gap-1">Facebook URL</label>
               <input
                 type="url"
-                className="w-full bg-bg-primary border border-border-color rounded-lg px-4 py-2.5 text-sm text-white placeholder-gray-500 transition-all focus:outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/15"
+                className="w-full bg-bg-primary border border-border-color rounded-lg px-4 py-2.5 text-sm text-text-primary placeholder-text-secondary/50 transition-all focus:outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/15"
                 value={facebook}
                 onChange={(e) => setFacebook(e.target.value)}
                 placeholder="https://facebook.com/..."
@@ -288,10 +288,10 @@ export default function CompanyForm({ company, isOpen, onClose, onSubmit }: Comp
             </div>
 
             <div className="flex flex-col gap-2">
-              <label className="text-xs font-semibold text-gray-300 flex items-center gap-1">LinkedIn URL</label>
+              <label className="text-xs font-semibold text-text-primary/95 flex items-center gap-1">LinkedIn URL</label>
               <input
                 type="url"
-                className="w-full bg-bg-primary border border-border-color rounded-lg px-4 py-2.5 text-sm text-white placeholder-gray-500 transition-all focus:outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/15"
+                className="w-full bg-bg-primary border border-border-color rounded-lg px-4 py-2.5 text-sm text-text-primary placeholder-text-secondary/50 transition-all focus:outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/15"
                 value={linkedin}
                 onChange={(e) => setLinkedin(e.target.value)}
                 placeholder="https://linkedin.com/company/..."
@@ -302,10 +302,10 @@ export default function CompanyForm({ company, isOpen, onClose, onSubmit }: Comp
           {/* Contact Details */}
           <div className="grid grid-cols-2 gap-4">
             <div className="flex flex-col gap-2">
-              <label className="text-xs font-semibold text-gray-300 flex items-center gap-1">Email Address</label>
+              <label className="text-xs font-semibold text-text-primary/95 flex items-center gap-1">Email Address</label>
               <input
                 type="email"
-                className="w-full bg-bg-primary border border-border-color rounded-lg px-4 py-2.5 text-sm text-white placeholder-gray-500 transition-all focus:outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/15"
+                className="w-full bg-bg-primary border border-border-color rounded-lg px-4 py-2.5 text-sm text-text-primary placeholder-text-secondary/50 transition-all focus:outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/15"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="contact@company.com"
@@ -313,10 +313,10 @@ export default function CompanyForm({ company, isOpen, onClose, onSubmit }: Comp
             </div>
 
             <div className="flex flex-col gap-2">
-              <label className="text-xs font-semibold text-gray-300 flex items-center gap-1">Phone Number</label>
+              <label className="text-xs font-semibold text-text-primary/95 flex items-center gap-1">Phone Number</label>
               <input
                 type="tel"
-                className="w-full bg-bg-primary border border-border-color rounded-lg px-4 py-2.5 text-sm text-white placeholder-gray-500 transition-all focus:outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/15"
+                className="w-full bg-bg-primary border border-border-color rounded-lg px-4 py-2.5 text-sm text-text-primary placeholder-text-secondary/50 transition-all focus:outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/15"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 placeholder="+88017XXXXXXXX"
@@ -326,13 +326,13 @@ export default function CompanyForm({ company, isOpen, onClose, onSubmit }: Comp
 
           {/* Priority Star Rating */}
           <div className="flex flex-col gap-2">
-            <label className="text-xs font-semibold text-gray-300 flex items-center gap-1">Priority / Rating (1-5 Stars)</label>
+            <label className="text-xs font-semibold text-text-primary/95 flex items-center gap-1">Priority / Rating (1-5 Stars)</label>
             <div className="flex gap-1">
               {[1, 2, 3, 4, 5].map((star) => (
                 <button
                   type="button"
                   key={star}
-                  className="bg-transparent text-gray-600 transition-all duration-150 hover:scale-110 cursor-pointer"
+                  className="bg-transparent text-text-secondary/30 transition-all duration-150 hover:scale-110 cursor-pointer"
                   onClick={() => setRating(star)}
                   title={`Rate ${star} Stars`}
                 >
@@ -347,9 +347,9 @@ export default function CompanyForm({ company, isOpen, onClose, onSubmit }: Comp
 
           {/* Research Notes */}
           <div className="flex flex-col gap-2">
-            <label className="text-xs font-semibold text-gray-300 flex items-center gap-1">Research Notes & Observations</label>
+            <label className="text-xs font-semibold text-text-primary/95 flex items-center gap-1">Research Notes & Observations</label>
             <textarea
-              className="w-full bg-bg-primary border border-border-color rounded-lg px-4 py-2.5 text-sm text-white placeholder-gray-500 transition-all focus:outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/15 min-h-[100px] resize-y"
+              className="w-full bg-bg-primary border border-border-color rounded-lg px-4 py-2.5 text-sm text-text-primary placeholder-text-secondary/50 transition-all focus:outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/15 min-h-[100px] resize-y"
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               placeholder="e.g. React/Next.js stack, hiring senior developers, CEO contact person..."
@@ -361,8 +361,8 @@ export default function CompanyForm({ company, isOpen, onClose, onSubmit }: Comp
         <div className="p-6 border-t border-border-color flex justify-end gap-4 bg-bg-tertiary">
           <button
             type="button"
-            className="text-sm font-semibold px-6 py-2.5 rounded-lg border bg-transparent text-gray-400 border-border-color hover:bg-white/5 hover:text-white cursor-pointer transition-all duration-200"
             onClick={onClose}
+            className="text-sm font-semibold px-6 py-2.5 rounded-lg border bg-transparent text-text-secondary border-border-color hover:bg-bg-tertiary hover:text-text-primary cursor-pointer transition-all duration-200"
             disabled={isSubmitting}
           >
             Cancel

@@ -31,7 +31,7 @@ export default function StatsPage() {
 
   if (isLoading) {
     return (
-      <div className="flex-1 flex flex-col items-center justify-center min-h-[500px] gap-4 text-gray-400">
+      <div className="flex-1 flex flex-col items-center justify-center min-h-[500px] gap-4 text-text-secondary">
         <div className="w-10 h-10 border-3 border-brand-primary/10 rounded-full border-t-brand-primary animate-spin"></div>
         <p className="text-sm font-semibold">Generating directory insights...</p>
       </div>
@@ -41,9 +41,9 @@ export default function StatsPage() {
   if (!stats || stats.total === 0) {
     return (
       <main className="max-w-[1280px] mx-auto px-6 py-12 flex-1 flex items-center justify-center">
-        <div className="bg-bg-secondary border border-dashed border-border-color rounded-2xl p-16 text-center max-w-[500px] flex flex-col items-center gap-5 text-gray-400">
-          <Icons.Website size={48} className="text-gray-500" />
-          <h2 className="text-xl font-bold text-white">No Analytics Data Available</h2>
+        <div className="bg-bg-secondary border border-dashed border-border-color rounded-2xl p-16 text-center max-w-[500px] flex flex-col items-center gap-5 text-text-secondary">
+          <Icons.Website size={48} className="text-text-secondary" />
+          <h2 className="text-xl font-bold text-text-primary">No Analytics Data Available</h2>
           <p className="text-sm leading-relaxed">
             Please add company profiles into your prospect directory first to compile performance graphs and pipeline distributions.
           </p>
@@ -85,10 +85,10 @@ export default function StatsPage() {
     <main className="max-w-[1280px] mx-auto px-6 py-10 flex-1 flex flex-col gap-8 animate-fade-in">
       {/* Title */}
       <div className="flex flex-col gap-1.5">
-        <h1 className="text-3xl font-extrabold text-white tracking-tight flex items-center gap-2">
+        <h1 className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-brand-primary to-brand-secondary tracking-tight">
           Analytics & Insights
         </h1>
-        <span className="text-sm text-gray-400">
+        <span className="text-sm text-text-secondary">
           A quantitative breakdown of your local target companies outreach pipeline.
         </span>
       </div>
@@ -97,37 +97,37 @@ export default function StatsPage() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {/* KPI 1 */}
         <div className="bg-bg-secondary border border-border-color rounded-xl p-5 hover:shadow-xl hover:border-brand-primary/30 transition-all duration-200">
-          <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider block mb-1">Target Companies</span>
+          <span className="text-xs font-semibold text-text-secondary uppercase tracking-wider block mb-1">Target Companies</span>
           <div className="flex items-baseline gap-2">
-            <span className="text-3xl font-extrabold text-white">{stats.total}</span>
-            <span className="text-xs text-gray-500">saved in database</span>
+            <span className="text-3xl font-extrabold text-text-primary">{stats.total}</span>
+            <span className="text-xs text-text-secondary/70">saved in database</span>
           </div>
         </div>
 
         {/* KPI 2 */}
         <div className="bg-bg-secondary border border-border-color rounded-xl p-5 hover:shadow-xl hover:border-contacted/30 transition-all duration-200">
-          <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider block mb-1">Outreach Rate</span>
+          <span className="text-xs font-semibold text-text-secondary uppercase tracking-wider block mb-1">Outreach Rate</span>
           <div className="flex items-baseline gap-2">
             <span className="text-3xl font-extrabold text-contacted">{contactedRate}%</span>
-            <span className="text-xs text-gray-500">({stats.contacted} contacted)</span>
+            <span className="text-xs text-text-secondary/70">({stats.contacted} contacted)</span>
           </div>
         </div>
 
         {/* KPI 3 */}
         <div className="bg-bg-secondary border border-border-color rounded-xl p-5 hover:shadow-xl hover:border-target/30 transition-all duration-200">
-          <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider block mb-1">Priority Targets</span>
+          <span className="text-xs font-semibold text-text-secondary uppercase tracking-wider block mb-1">Priority Targets</span>
           <div className="flex items-baseline gap-2">
             <span className="text-3xl font-extrabold text-target">{stats.priority}</span>
-            <span className="text-xs text-gray-500">4+ stars in To Explore/Target</span>
+            <span className="text-xs text-text-secondary/70">4+ stars in To Explore/Target</span>
           </div>
         </div>
 
         {/* KPI 4 */}
         <div className="bg-bg-secondary border border-border-color rounded-xl p-5 hover:shadow-xl hover:border-applied/30 transition-all duration-200">
-          <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider block mb-1">Average Target Score</span>
+          <span className="text-xs font-semibold text-text-secondary uppercase tracking-wider block mb-1">Average Target Score</span>
           <div className="flex items-baseline gap-2">
-            <span className="text-3xl font-extrabold text-white">{stats.averageRating}</span>
-            <span className="text-xs text-gray-500">/ 5.0 stars avg</span>
+            <span className="text-3xl font-extrabold text-text-primary">{stats.averageRating}</span>
+            <span className="text-xs text-text-secondary/70">/ 5.0 stars avg</span>
           </div>
         </div>
       </div>
@@ -141,7 +141,7 @@ export default function StatsPage() {
             <span className="p-1.5 rounded-lg bg-brand-primary/10 text-brand-secondary">
               <Icons.Star size={16} />
             </span>
-            <h3 className="text-base font-bold text-white">Outreach Pipeline Stages</h3>
+            <h3 className="text-base font-bold text-text-primary">Outreach Pipeline Stages</h3>
           </div>
 
           <div className="flex flex-col gap-4">
@@ -150,12 +150,12 @@ export default function StatsPage() {
               return (
                 <div key={status} className={`p-4 border rounded-xl bg-bg-primary/40 ${getStatusBorder(status)} transition-all flex flex-col gap-2`}>
                   <div className="flex items-center justify-between text-sm">
-                    <span className="font-bold text-white flex items-center gap-2">
+                    <span className="font-bold text-text-primary flex items-center gap-2">
                       <span className={`w-2.5 h-2.5 rounded-full ${getStatusColor(status)}`}></span>
                       {status}
                     </span>
-                    <span className="font-semibold text-gray-400">
-                      {count} {count === 1 ? 'company' : 'companies'} <span className="text-xs text-gray-500">({pct}%)</span>
+                    <span className="font-semibold text-text-secondary">
+                      {count} {count === 1 ? 'company' : 'companies'} <span className="text-xs text-text-secondary/70">({pct}%)</span>
                     </span>
                   </div>
                   <div className="w-full bg-bg-tertiary h-2 rounded-full overflow-hidden">
@@ -173,7 +173,7 @@ export default function StatsPage() {
             <span className="p-1.5 rounded-lg bg-brand-primary/10 text-brand-secondary">
               <Icons.Website size={16} />
             </span>
-            <h3 className="text-base font-bold text-white">Industry Category Distribution</h3>
+            <h3 className="text-base font-bold text-text-primary">Industry Category Distribution</h3>
           </div>
 
           <div className="flex flex-col gap-4 max-h-[360px] overflow-y-auto pr-1">
@@ -181,7 +181,7 @@ export default function StatsPage() {
               const pct = stats.total > 0 ? Math.round((count / stats.total) * 100) : 0;
               return (
                 <div key={category} className="flex flex-col gap-1 text-sm">
-                  <div className="flex justify-between items-center text-gray-300">
+                  <div className="flex justify-between items-center text-text-primary/95">
                     <span className="font-medium truncate max-w-[70%]" title={category}>{category}</span>
                     <span className="text-xs font-bold text-brand-secondary">
                       {count} {count === 1 ? 'target' : 'targets'} ({pct}%)
@@ -204,7 +204,7 @@ export default function StatsPage() {
           <span className="p-1.5 rounded-lg bg-brand-primary/10 text-brand-secondary">
             <Icons.Star size={16} />
           </span>
-          <h3 className="text-base font-bold text-white">Priority Stars Density</h3>
+          <h3 className="text-base font-bold text-text-primary">Priority Stars Density</h3>
         </div>
 
         <div className="grid grid-cols-5 gap-4">
@@ -217,10 +217,10 @@ export default function StatsPage() {
               <div key={starRating} className="bg-bg-primary/30 border border-border-color/30 rounded-xl p-4 flex flex-col items-center justify-center gap-2 text-center hover:bg-bg-primary/60 transition-colors">
                 <div className="flex gap-0.5 text-target">
                   <Icons.Star size={14} className="fill-target text-target" />
-                  <span className="text-sm font-bold text-white">{starRating}★</span>
+                  <span className="text-sm font-bold text-text-primary">{starRating}★</span>
                 </div>
-                <div className="text-2xl font-black text-white">{count}</div>
-                <div className="text-[10px] text-gray-500 font-semibold uppercase">{pct}% of targets</div>
+                <div className="text-2xl font-black text-text-primary">{count}</div>
+                <div className="text-[10px] text-text-secondary font-semibold uppercase">{pct}% of targets</div>
               </div>
             );
           })}

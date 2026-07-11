@@ -1,14 +1,19 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
-  --color-bg-primary: #0b0f19;
-  --color-bg-secondary: #161e2e;
-  --color-bg-tertiary: #1f2a3d;
+  --color-bg-primary: var(--bg-primary);
+  --color-bg-secondary: var(--bg-secondary);
+  --color-bg-tertiary: var(--bg-tertiary);
   
-  --color-border-color: #2d3748;
+  --color-border-color: var(--border-color);
   
-  --color-brand-primary: #6366f1;
-  --color-brand-secondary: #06b6d4;
+  --color-brand-primary: var(--brand-primary);
+  --color-brand-secondary: var(--brand-secondary);
+  
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
   
   --color-explore: #3b82f6;
   --color-target: #f59e0b;
@@ -18,12 +23,40 @@
   --color-nothiring: #ef4444;
 }
 
+:root {
+  --bg-primary: #e7ecef;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #d8e2eb;
+  
+  --border-color: #a3cef1;
+  
+  --brand-primary: #274c77;
+  --brand-secondary: #6096ba;
+  
+  --text-primary: #274c77;
+  --text-secondary: #8b8c89;
+}
+
+.dark {
+  --bg-primary: #0f172a;
+  --bg-secondary: #1e293b;
+  --bg-tertiary: #334155;
+  
+  --border-color: #274c77;
+  
+  --brand-primary: #6096ba;
+  --brand-secondary: #a3cef1;
+  
+  --text-primary: #e7ecef;
+  --text-secondary: #8b8c89;
+}
+
 /* Custom scrollbars & resets */
 html, body {
   width: 100%;
   min-height: 100vh;
   background-color: var(--color-bg-primary);
-  color: #f3f4f6;
+  color: var(--color-text-primary);
   font-family: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
