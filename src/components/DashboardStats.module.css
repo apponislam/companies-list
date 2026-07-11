@@ -1,0 +1,86 @@
+.statsContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  animation: fadeIn var(--transition-normal);
+}
+
+.card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  transition: transform var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
+  position: relative;
+  overflow: hidden;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  border-color: var(--accent-primary);
+  box-shadow: var(--shadow-lg);
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--accent-primary);
+  opacity: 0.7;
+}
+
+/* Accent border colors for specific stats card */
+.cardExplore::before { background: var(--color-explore); }
+.cardTarget::before { background: var(--color-target); }
+.cardContacted::before { background: var(--color-contacted); }
+.cardApplied::before { background: var(--color-applied); }
+
+.iconContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  transition: color var(--transition-fast), background var(--transition-fast);
+}
+
+.card:hover .iconContainer {
+  background: var(--accent-primary);
+  color: #fff;
+}
+
+.cardExplore:hover .iconContainer { background: var(--color-explore); }
+.cardTarget:hover .iconContainer { background: var(--color-target); }
+.cardContacted:hover .iconContainer { background: var(--color-contacted); }
+.cardApplied:hover .iconContainer { background: var(--color-applied); }
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.value {
+  font-size: 1.75rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--text-primary);
+}
+
+.label {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
