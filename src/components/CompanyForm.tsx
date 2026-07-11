@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Company } from '@/lib/database';
-import styles from './CompanyForm.module.css';
 import { Icons } from './Icons';
 
 interface CompanyFormProps {
-  company?: Company | null; // If provided, we are in Edit Mode
+  company?: Company | null;
   isOpen: boolean;
   onClose: () => void;
   onSubmit: (data: Omit<Company, 'id' | 'createdAt' | 'updatedAt'>) => Promise<void>;
@@ -39,7 +38,6 @@ export default function CompanyForm({ company, isOpen, onClose, onSubmit }: Comp
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [validationError, setValidationError] = useState<string | null>(null);
 
-  // Sync state with edit target when open
   useEffect(() => {
     if (company) {
       setName(company.name);
@@ -61,7 +59,6 @@ export default function CompanyForm({ company, isOpen, onClose, onSubmit }: Comp
       setRating(company.rating);
       setNotes(company.notes || '');
     } else {
-      // Reset form
       setName('');
       setCategory('Software House');
       setCustomCategory('');
@@ -85,13 +82,11 @@ export default function CompanyForm({ company, isOpen, onClose, onSubmit }: Comp
     e.preventDefault();
     setValidationError(null);
 
-    // Basic validation
     if (!name.trim()) return setValidationError('Company name is required.');
     if (!address.trim()) return setValidationError('Address is required.');
-    if (!mapLink.trim()) return setValidationError('Google Maps / Location link is required.');
-    if (!website.trim()) return setValidationError('Website link is required.');
+    if (!mapLink.trim()) return setValidationError('Google Maps link is required.');
+    if (!website.trim()) return setValidationError('Website URL is required.');
 
-    // URL validation
     const validateUrl = (url: string) => {
       try {
         new URL(url);
@@ -102,10 +97,10 @@ export default function CompanyForm({ company, isOpen, onClose, onSubmit }: Comp
     };
 
     if (!validateUrl(website)) {
-      return setValidationError('Please enter a valid website URL (including http:// or https://).');
+      return setValidationError('Please enter a valid website URL (starting with http:// or https://).');
     }
     if (!validateUrl(mapLink)) {
-      return setValidationError('Please enter a valid Maps link (including http:// or https://).');
+      return setValidationError('Please enter a valid Google Maps URL.');
     }
     if (facebook && !validateUrl(facebook)) {
       return setValidationError('Please enter a valid Facebook URL.');
@@ -118,7 +113,7 @@ export default function CompanyForm({ company, isOpen, onClose, onSubmit }: Comp
     try {
       const finalCategory = category === 'Other' ? customCategory.trim() : category;
       if (!finalCategory) {
-        setValidationError('Please specify the category.');
+        setValidationError('Please specify the custom category.');
         setIsSubmitting(false);
         return;
       }
@@ -147,33 +142,33 @@ export default function CompanyForm({ company, isOpen, onClose, onSubmit }: Comp
   };
 
   return (
-    <div className={styles.overlay} onClick={onClose}>
-      <div className={styles.drawer} onClick={(e) => e.stopPropagation()}>
+    <div className="fixed top-0 left-0 w-full height-full bg-black/60 backdrop-blur-sm z-[1000] flex justify-end animate-fade-in" onClick={onClose} style={{ height: '100vh' }}>
+      <div className="w-full max-w-[480px] h-full bg-bg-secondary border-l border-border-color shadow-2xl flex flex-col animate-slide-in" onClick={(e) => e.stopPropagation()}>
         
         {/* Drawer Header */}
-        <div className={styles.header}>
-          <h2 className={styles.title}>{company ? 'Edit Company Profile' : 'Add Target Company'}</h2>
-          <button className={styles.closeButton} onClick={onClose} aria-label="Close form">
+        <div className="p-6 border-b border-border-color flex justify-between items-center">
+          <h2 className="text-xl font-bold text-white">{company ? 'Edit Company Profile' : 'Add Target Company'}</h2>
+          <button className="text-gray-400 bg-transparent w-8 h-8 rounded-full flex items-center justify-center transition-colors hover:bg-bg-tertiary hover:text-white cursor-pointer" onClick={onClose} aria-label="Close form">
             <Icons.Close size={20} />
           </button>
         </div>
 
         {/* Drawer Body Form */}
-        <form onSubmit={handleSubmit} className={styles.formContent}>
+        <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-6 flex flex-col gap-5">
           {validationError && (
-            <div className={styles.errorMessage}>
+            <div className="text-xs text-nothiring p-3 bg-nothiring/10 border border-nothiring/20 rounded-lg">
               <strong>Error:</strong> {validationError}
             </div>
           )}
 
           {/* Company Name */}
-          <div className={styles.fieldGroup}>
-            <label className={styles.label}>
-              Company Name <span className={styles.required}>*</span>
+          <div className="flex flex-col gap-2">
+            <label className="text-xs font-semibold text-gray-300 flex items-center gap-1">
+              Company Name <span className="text-nothiring">*</span>
             </label>
             <input
               type="text"
-              className={styles.input}
+              className="w-full bg-bg-primary border border-border-color rounded-lg px-4 py-2.5 text-sm text-white placeholder-gray-500 transition-all focus:outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/15"
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="e.g. Google Maps, TechSoft Ltd."
@@ -181,14 +176,14 @@ export default function CompanyForm({ company, isOpen, onClose, onSubmit }: Comp
             />
           </div>
 
-          {/* Category Selector */}
-          <div className={styles.row}>
-            <div className={styles.fieldGroup}>
-              <label className={styles.label}>
-                Category <span className={styles.required}>*</span>
+          {/* Category & Status */}
+          <div className="grid grid-cols-2 gap-4">
+            <div className="flex flex-col gap-2">
+              <label className="text-xs font-semibold text-gray-300 flex items-center gap-1">
+                Category <span className="text-nothiring">*</span>
               </label>
               <select
-                className={styles.select}
+                className="w-full bg-bg-primary border border-border-color rounded-lg px-4 py-2.5 text-sm text-white placeholder-gray-500 transition-all focus:outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/15"
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
               >
@@ -200,11 +195,10 @@ export default function CompanyForm({ company, isOpen, onClose, onSubmit }: Comp
               </select>
             </div>
 
-            {/* Interest/Prospect Status */}
-            <div className={styles.fieldGroup}>
-              <label className={styles.label}>Interest Status</label>
+            <div className="flex flex-col gap-2">
+              <label className="text-xs font-semibold text-gray-300 flex items-center gap-1">Interest Status</label>
               <select
-                className={styles.select}
+                className="w-full bg-bg-primary border border-border-color rounded-lg px-4 py-2.5 text-sm text-white placeholder-gray-500 transition-all focus:outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/15"
                 value={status}
                 onChange={(e) => setStatus(e.target.value as Company['status'])}
               >
@@ -218,15 +212,15 @@ export default function CompanyForm({ company, isOpen, onClose, onSubmit }: Comp
             </div>
           </div>
 
-          {/* Custom Category Field (Visible if 'Other' selected) */}
+          {/* Custom Category */}
           {category === 'Other' && (
-            <div className={styles.fieldGroup}>
-              <label className={styles.label}>
-                Custom Category <span className={styles.required}>*</span>
+            <div className="flex flex-col gap-2">
+              <label className="text-xs font-semibold text-gray-300 flex items-center gap-1">
+                Custom Category <span className="text-nothiring">*</span>
               </label>
               <input
                 type="text"
-                className={styles.input}
+                className="w-full bg-bg-primary border border-border-color rounded-lg px-4 py-2.5 text-sm text-white placeholder-gray-500 transition-all focus:outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/15"
                 value={customCategory}
                 onChange={(e) => setCustomCategory(e.target.value)}
                 placeholder="e.g. AI Laboratory, FinTech startup"
@@ -236,13 +230,13 @@ export default function CompanyForm({ company, isOpen, onClose, onSubmit }: Comp
           )}
 
           {/* Physical Address */}
-          <div className={styles.fieldGroup}>
-            <label className={styles.label}>
-              Location/Address <span className={styles.required}>*</span>
+          <div className="flex flex-col gap-2">
+            <label className="text-xs font-semibold text-gray-300 flex items-center gap-1">
+              Location/Address <span className="text-nothiring">*</span>
             </label>
             <input
               type="text"
-              className={styles.input}
+              className="w-full bg-bg-primary border border-border-color rounded-lg px-4 py-2.5 text-sm text-white placeholder-gray-500 transition-all focus:outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/15"
               value={address}
               onChange={(e) => setAddress(e.target.value)}
               placeholder="e.g. Sector 11, Uttara, Dhaka or Remote"
@@ -251,13 +245,13 @@ export default function CompanyForm({ company, isOpen, onClose, onSubmit }: Comp
           </div>
 
           {/* Google Maps Link */}
-          <div className={styles.fieldGroup}>
-            <label className={styles.label}>
-              Google Maps URL <span className={styles.required}>*</span>
+          <div className="flex flex-col gap-2">
+            <label className="text-xs font-semibold text-gray-300 flex items-center gap-1">
+              Google Maps URL <span className="text-nothiring">*</span>
             </label>
             <input
               type="url"
-              className={styles.input}
+              className="w-full bg-bg-primary border border-border-color rounded-lg px-4 py-2.5 text-sm text-white placeholder-gray-500 transition-all focus:outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/15"
               value={mapLink}
               onChange={(e) => setMapLink(e.target.value)}
               placeholder="https://maps.google.com/?q=..."
@@ -266,13 +260,13 @@ export default function CompanyForm({ company, isOpen, onClose, onSubmit }: Comp
           </div>
 
           {/* Website Link */}
-          <div className={styles.fieldGroup}>
-            <label className={styles.label}>
-              Website URL <span className={styles.required}>*</span>
+          <div className="flex flex-col gap-2">
+            <label className="text-xs font-semibold text-gray-300 flex items-center gap-1">
+              Website URL <span className="text-nothiring">*</span>
             </label>
             <input
               type="url"
-              className={styles.input}
+              className="w-full bg-bg-primary border border-border-color rounded-lg px-4 py-2.5 text-sm text-white placeholder-gray-500 transition-all focus:outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/15"
               value={website}
               onChange={(e) => setWebsite(e.target.value)}
               placeholder="https://example.com"
@@ -281,23 +275,23 @@ export default function CompanyForm({ company, isOpen, onClose, onSubmit }: Comp
           </div>
 
           {/* Social Profiles */}
-          <div className={styles.row}>
-            <div className={styles.fieldGroup}>
-              <label className={styles.label}>Facebook URL</label>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="flex flex-col gap-2">
+              <label className="text-xs font-semibold text-gray-300 flex items-center gap-1">Facebook URL</label>
               <input
                 type="url"
-                className={styles.input}
+                className="w-full bg-bg-primary border border-border-color rounded-lg px-4 py-2.5 text-sm text-white placeholder-gray-500 transition-all focus:outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/15"
                 value={facebook}
                 onChange={(e) => setFacebook(e.target.value)}
                 placeholder="https://facebook.com/..."
               />
             </div>
 
-            <div className={styles.fieldGroup}>
-              <label className={styles.label}>LinkedIn URL</label>
+            <div className="flex flex-col gap-2">
+              <label className="text-xs font-semibold text-gray-300 flex items-center gap-1">LinkedIn URL</label>
               <input
                 type="url"
-                className={styles.input}
+                className="w-full bg-bg-primary border border-border-color rounded-lg px-4 py-2.5 text-sm text-white placeholder-gray-500 transition-all focus:outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/15"
                 value={linkedin}
                 onChange={(e) => setLinkedin(e.target.value)}
                 placeholder="https://linkedin.com/company/..."
@@ -305,24 +299,24 @@ export default function CompanyForm({ company, isOpen, onClose, onSubmit }: Comp
             </div>
           </div>
 
-          {/* Contact details */}
-          <div className={styles.row}>
-            <div className={styles.fieldGroup}>
-              <label className={styles.label}>Email Address</label>
+          {/* Contact Details */}
+          <div className="grid grid-cols-2 gap-4">
+            <div className="flex flex-col gap-2">
+              <label className="text-xs font-semibold text-gray-300 flex items-center gap-1">Email Address</label>
               <input
                 type="email"
-                className={styles.input}
+                className="w-full bg-bg-primary border border-border-color rounded-lg px-4 py-2.5 text-sm text-white placeholder-gray-500 transition-all focus:outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/15"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="contact@company.com"
               />
             </div>
 
-            <div className={styles.fieldGroup}>
-              <label className={styles.label}>Phone Number</label>
+            <div className="flex flex-col gap-2">
+              <label className="text-xs font-semibold text-gray-300 flex items-center gap-1">Phone Number</label>
               <input
                 type="tel"
-                className={styles.input}
+                className="w-full bg-bg-primary border border-border-color rounded-lg px-4 py-2.5 text-sm text-white placeholder-gray-500 transition-all focus:outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/15"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 placeholder="+88017XXXXXXXX"
@@ -331,20 +325,20 @@ export default function CompanyForm({ company, isOpen, onClose, onSubmit }: Comp
           </div>
 
           {/* Priority Star Rating */}
-          <div className={styles.fieldGroup}>
-            <label className={styles.label}>Priority / Rating (1-5 Stars)</label>
-            <div className={styles.ratingSelector}>
+          <div className="flex flex-col gap-2">
+            <label className="text-xs font-semibold text-gray-300 flex items-center gap-1">Priority / Rating (1-5 Stars)</label>
+            <div className="flex gap-1">
               {[1, 2, 3, 4, 5].map((star) => (
                 <button
                   type="button"
                   key={star}
-                  className={styles.starBtn}
+                  className="bg-transparent text-gray-600 transition-all duration-150 hover:scale-110 cursor-pointer"
                   onClick={() => setRating(star)}
                   title={`Rate ${star} Stars`}
                 >
                   <Icons.Star
                     size={24}
-                    className={star <= rating ? styles.starFilled : ''}
+                    className={star <= rating ? 'text-target fill-target' : ''}
                   />
                 </button>
               ))}
@@ -352,10 +346,10 @@ export default function CompanyForm({ company, isOpen, onClose, onSubmit }: Comp
           </div>
 
           {/* Research Notes */}
-          <div className={styles.fieldGroup}>
-            <label className={styles.label}>Research Notes & Observations</label>
+          <div className="flex flex-col gap-2">
+            <label className="text-xs font-semibold text-gray-300 flex items-center gap-1">Research Notes & Observations</label>
             <textarea
-              className={styles.textarea}
+              className="w-full bg-bg-primary border border-border-color rounded-lg px-4 py-2.5 text-sm text-white placeholder-gray-500 transition-all focus:outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/15 min-h-[100px] resize-y"
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               placeholder="e.g. React/Next.js stack, hiring senior developers, CEO contact person..."
@@ -364,10 +358,10 @@ export default function CompanyForm({ company, isOpen, onClose, onSubmit }: Comp
         </form>
 
         {/* Drawer Actions Footer */}
-        <div className={styles.footer}>
+        <div className="p-6 border-t border-border-color flex justify-end gap-4 bg-bg-tertiary">
           <button
             type="button"
-            className={`${styles.btn} styles.btnCancel`}
+            className="text-sm font-semibold px-6 py-2.5 rounded-lg border bg-transparent text-gray-400 border-border-color hover:bg-white/5 hover:text-white cursor-pointer transition-all duration-200"
             onClick={onClose}
             disabled={isSubmitting}
           >
@@ -375,7 +369,7 @@ export default function CompanyForm({ company, isOpen, onClose, onSubmit }: Comp
           </button>
           <button
             type="button"
-            className={`${styles.btn} ${styles.btnSubmit}`}
+            className="text-sm font-semibold px-6 py-2.5 rounded-lg bg-brand-primary text-white hover:bg-brand-primary/95 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer transition-all duration-200"
             onClick={handleSubmit}
             disabled={isSubmitting}
           >

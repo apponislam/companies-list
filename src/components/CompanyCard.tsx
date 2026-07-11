@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Company } from '@/lib/database';
-import styles from './CompanyCard.module.css';
 import { Icons } from './Icons';
 
 interface CompanyCardProps {
@@ -25,51 +24,58 @@ export default function CompanyCard({ company, onEdit, onDelete }: CompanyCardPr
   const getStatusClass = (status: Company['status']) => {
     switch (status) {
       case 'To Explore':
-        return styles.statusExplore;
+        return 'bg-explore/10 text-explore border-explore/30';
       case 'Target / Save':
-        return styles.statusTarget;
+        return 'bg-target/10 text-target border-target/30';
       case 'Contacted':
-        return styles.statusContacted;
+        return 'bg-contacted/10 text-contacted border-contacted/30';
       case 'Applied':
-        return styles.statusApplied;
+        return 'bg-applied/10 text-applied border-applied/30';
       case 'In Dialogue':
-        return styles.statusDialogue;
+        return 'bg-dialogue/10 text-dialogue border-dialogue/30';
       case 'Not Hiring':
-        return styles.statusNothiring;
+        return 'bg-nothiring/10 text-nothiring border-nothiring/30';
       default:
-        return styles.statusExplore;
+        return 'bg-explore/10 text-explore border-explore/30';
     }
   };
 
   return (
-    <div className={styles.card}>
+    <div className="bg-bg-secondary border border-border-color rounded-2xl p-6 flex flex-col justify-between gap-5 transition-all duration-200 hover:-translate-y-1 hover:border-brand-primary hover:shadow-xl relative animate-fade-in">
+      
       {/* Top Header */}
-      <div className={styles.header}>
-        <div className={styles.nameContainer}>
-          <h3 className={styles.name} title={company.name}>{company.name}</h3>
-          <span className={styles.category}>{company.category}</span>
+      <div className="flex justify-between items-start gap-4">
+        <div className="flex flex-col gap-1 max-w-[70%]">
+          <h3 className="text-lg font-bold text-white truncate" title={company.name}>
+            {company.name}
+          </h3>
+          <span className="text-[10px] font-semibold text-brand-secondary uppercase tracking-wider">
+            {company.category}
+          </span>
         </div>
-        <span className={`${styles.statusBadge} ${getStatusClass(company.status)}`}>
+        <span className={`text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider whitespace-nowrap border ${getStatusClass(company.status)}`}>
           {company.status}
         </span>
       </div>
 
       {/* Address & Rating */}
-      <div className={styles.body}>
-        <div className={styles.addressRow}>
-          <Icons.Pin size={16} />
-          <span className={styles.addressText} title={company.address}>
+      <div className="flex flex-col gap-3">
+        <div className="flex items-start gap-2 text-gray-300 text-sm">
+          <span className="mt-0.5 text-gray-500 shrink-0">
+            <Icons.Pin size={16} />
+          </span>
+          <span className="line-clamp-2" title={company.address}>
             {company.address}
           </span>
         </div>
 
         {/* Priority Rating */}
-        <div className={styles.ratingRow} title={`Priority: ${company.rating}/5 stars`}>
+        <div className="flex gap-0.5 text-gray-600" title={`Priority: ${company.rating}/5 stars`}>
           {Array.from({ length: 5 }).map((_, idx) => (
             <Icons.Star
               key={idx}
               size={16}
-              className={idx < company.rating ? styles.starFilled : ''}
+              className={idx < company.rating ? 'text-target fill-target' : ''}
             />
           ))}
         </div>
@@ -77,37 +83,49 @@ export default function CompanyCard({ company, onEdit, onDelete }: CompanyCardPr
 
       {/* Contact Panel (Only if Email or Phone is provided) */}
       {(company.email || company.phone) && (
-        <div className={styles.contactBox}>
+        <div className="bg-bg-tertiary rounded-lg p-3 flex flex-col gap-2 text-xs border border-white/5">
           {company.email && (
-            <div className={styles.contactRow}>
-              <div className={styles.contactInfo} title={company.email}>
-                <Icons.Email size={14} />
-                <span>{company.email}</span>
+            <div className="flex items-center justify-between gap-2 text-gray-300">
+              <div className="flex items-center gap-2 truncate max-w-[85%]" title={company.email}>
+                <span className="text-gray-500 shrink-0">
+                  <Icons.Email size={14} />
+                </span>
+                <span className="truncate">{company.email}</span>
               </div>
               <button
-                className={styles.copyButton}
+                className="bg-transparent text-gray-500 p-1 rounded transition-colors hover:text-white hover:bg-white/5 flex items-center justify-center relative cursor-pointer"
                 onClick={() => handleCopy(company.email!, 'email')}
                 title="Copy Email"
               >
                 {copiedType === 'email' ? <Icons.Check size={14} /> : <Icons.Copy size={14} />}
-                {copiedType === 'email' && <span className={styles.copiedTooltip}>Copied!</span>}
+                {copiedType === 'email' && (
+                  <span className="absolute bottom-[130%] right-0 bg-brand-secondary text-bg-primary text-[10px] font-bold px-2 py-0.5 rounded shadow-md pointer-events-none animate-fade-in">
+                    Copied!
+                  </span>
+                )}
               </button>
             </div>
           )}
 
           {company.phone && (
-            <div className={styles.contactRow}>
-              <div className={styles.contactInfo} title={company.phone}>
-                <Icons.Phone size={14} />
-                <span>{company.phone}</span>
+            <div className="flex items-center justify-between gap-2 text-gray-300">
+              <div className="flex items-center gap-2 truncate max-w-[85%]" title={company.phone}>
+                <span className="text-gray-500 shrink-0">
+                  <Icons.Phone size={14} />
+                </span>
+                <span className="truncate">{company.phone}</span>
               </div>
               <button
-                className={styles.copyButton}
+                className="bg-transparent text-gray-500 p-1 rounded transition-colors hover:text-white hover:bg-white/5 flex items-center justify-center relative cursor-pointer"
                 onClick={() => handleCopy(company.phone!, 'phone')}
                 title="Copy Phone Number"
               >
                 {copiedType === 'phone' ? <Icons.Check size={14} /> : <Icons.Copy size={14} />}
-                {copiedType === 'phone' && <span className={styles.copiedTooltip}>Copied!</span>}
+                {copiedType === 'phone' && (
+                  <span className="absolute bottom-[130%] right-0 bg-brand-secondary text-bg-primary text-[10px] font-bold px-2 py-0.5 rounded shadow-md pointer-events-none animate-fade-in">
+                    Copied!
+                  </span>
+                )}
               </button>
             </div>
           )}
@@ -115,13 +133,13 @@ export default function CompanyCard({ company, onEdit, onDelete }: CompanyCardPr
       )}
 
       {/* Action Links */}
-      <div className={styles.linksRow}>
+      <div className="flex gap-3 my-1">
         {company.website && (
           <a
             href={company.website}
             target="_blank"
             rel="noopener noreferrer"
-            className={`${styles.linkIcon} ${styles.linkWebsite}`}
+            className="flex items-center justify-center w-9 h-9 rounded-full bg-bg-tertiary text-gray-400 border border-border-color transition-all duration-200 hover:-translate-y-0.5 hover:text-white hover:bg-brand-primary hover:border-brand-primary"
             title="Visit Website"
           >
             <Icons.Website size={18} />
@@ -133,7 +151,7 @@ export default function CompanyCard({ company, onEdit, onDelete }: CompanyCardPr
             href={company.mapLink}
             target="_blank"
             rel="noopener noreferrer"
-            className={`${styles.linkIcon} ${styles.linkMap}`}
+            className="flex items-center justify-center w-9 h-9 rounded-full bg-bg-tertiary text-gray-400 border border-border-color transition-all duration-200 hover:-translate-y-0.5 hover:text-white hover:bg-[#ea4335] hover:border-[#ea4335]"
             title="Google Maps Location"
           >
             <Icons.Map size={18} />
@@ -145,7 +163,7 @@ export default function CompanyCard({ company, onEdit, onDelete }: CompanyCardPr
             href={company.linkedin}
             target="_blank"
             rel="noopener noreferrer"
-            className={`${styles.linkIcon} ${styles.linkLinkedin}`}
+            className="flex items-center justify-center w-9 h-9 rounded-full bg-bg-tertiary text-gray-400 border border-border-color transition-all duration-200 hover:-translate-y-0.5 hover:text-white hover:bg-[#0a66c2] hover:border-[#0a66c2]"
             title="LinkedIn Profile"
           >
             <Icons.LinkedIn size={18} />
@@ -157,7 +175,7 @@ export default function CompanyCard({ company, onEdit, onDelete }: CompanyCardPr
             href={company.facebook}
             target="_blank"
             rel="noopener noreferrer"
-            className={`${styles.linkIcon} ${styles.linkFacebook}`}
+            className="flex items-center justify-center w-9 h-9 rounded-full bg-bg-tertiary text-gray-400 border border-border-color transition-all duration-200 hover:-translate-y-0.5 hover:text-white hover:bg-[#1877f2] hover:border-[#1877f2]"
             title="Facebook Page"
           >
             <Icons.Facebook size={18} />
@@ -167,17 +185,19 @@ export default function CompanyCard({ company, onEdit, onDelete }: CompanyCardPr
 
       {/* Notes Preview (If exists) */}
       {company.notes && (
-        <div className={styles.notesArea}>
-          <span className={styles.notesTitle}>Notes</span>
-          <div className={styles.notesContent}>{company.notes}</div>
+        <div className="border-t border-dashed border-border-color pt-3 flex flex-col gap-1">
+          <span className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">Notes</span>
+          <div className="text-xs text-gray-300 leading-relaxed pre-wrap max-h-20 overflow-y-auto pr-1 scrollbar-thin">
+            {company.notes}
+          </div>
         </div>
       )}
 
       {/* Card Actions Footer */}
-      <div className={styles.footer}>
+      <div className="flex justify-end gap-3 border-t border-border-color pt-3">
         <button
           onClick={() => onEdit(company)}
-          className={`${styles.actionButton} ${styles.editBtn}`}
+          className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg border bg-brand-primary/10 text-white border-brand-primary/20 hover:bg-brand-primary hover:border-brand-primary transition-all duration-200 cursor-pointer"
         >
           <Icons.Edit size={14} />
           Edit
@@ -188,7 +208,7 @@ export default function CompanyCard({ company, onEdit, onDelete }: CompanyCardPr
               onDelete(company.id);
             }
           }}
-          className={`${styles.actionButton} ${styles.deleteBtn}`}
+          className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg border bg-nothiring/10 text-nothiring border-nothiring/20 hover:bg-nothiring hover:border-nothiring hover:text-white transition-all duration-200 cursor-pointer"
         >
           <Icons.Delete size={14} />
           Delete

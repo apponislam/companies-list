@@ -1,8 +1,7 @@
 'use client';
 
-import React, { useState, useEffect, useMemo, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Company } from '@/lib/database';
-import styles from './page.module.css';
 import DashboardStats from '@/components/DashboardStats';
 import CompanyCard from '@/components/CompanyCard';
 import CompanyForm from '@/components/CompanyForm';
@@ -229,17 +228,20 @@ export default function DashboardPage() {
   };
 
   return (
-    <main className="container">
-      <div className={styles.main}>
+    <main className="max-w-[1280px] mx-auto px-6 py-8">
+      <div className="w-full min-h-screen flex flex-col py-8 animate-fade-in">
+        
         {/* Header */}
-        <div className={styles.header}>
-          <div className={styles.titleContainer}>
-            <h1 className={styles.title}>Company Directory</h1>
-            <span className={styles.subtitle}>
+        <div className="flex justify-between items-center mb-8 flex-wrap gap-6">
+          <div className="flex flex-col gap-1">
+            <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400 tracking-tight">
+              Company Directory
+            </h1>
+            <span className="text-sm text-gray-400 font-medium">
               Research, prioritize, and explore target local companies for career opportunities.
             </span>
           </div>
-          <button onClick={handleAddTrigger} className={styles.addBtn}>
+          <button onClick={handleAddTrigger} className="flex items-center gap-2 bg-brand-primary text-white font-semibold px-6 py-2.5 rounded-lg transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg cursor-pointer">
             <Icons.Add size={18} />
             Add Company
           </button>
@@ -249,11 +251,11 @@ export default function DashboardPage() {
         <DashboardStats stats={stats} />
 
         {/* Filters Controls Panel */}
-        <div className={styles.controlsSection}>
+        <div className="bg-bg-secondary border border-border-color rounded-xl p-5 mb-8 flex flex-col gap-5">
           {/* Row 1: Search & Dropdowns */}
-          <div className={styles.searchRow}>
-            <div className={styles.searchContainer}>
-              <span className={styles.searchIcon}>
+          <div className="flex gap-4 flex-wrap">
+            <div className="relative flex-1 min-w-[260px]">
+              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none">
                 <Icons.Search size={18} />
               </span>
               <input
@@ -261,7 +263,7 @@ export default function DashboardPage() {
                 placeholder="Search companies by name, location, stack, or notes..."
                 value={searchInputValue}
                 onChange={(e) => setSearchInputValue(e.target.value)}
-                className={styles.searchInput}
+                className="w-full bg-bg-primary border border-border-color rounded-lg pl-11 pr-4 py-2.5 text-sm text-white placeholder-gray-500 transition-all focus:outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/15"
               />
             </div>
 
@@ -269,7 +271,7 @@ export default function DashboardPage() {
             <select
               value={selectedCategory}
               onChange={(e) => handleCategoryChange(e.target.value)}
-              className={styles.filterSelect}
+              className="bg-bg-primary border border-border-color rounded-lg px-4 py-2.5 text-sm text-white min-w-[180px] transition-all focus:outline-none focus:border-brand-primary cursor-pointer"
               title="Filter by Industry Category"
             >
               <option value="All">All Categories</option>
@@ -286,7 +288,7 @@ export default function DashboardPage() {
             <select
               value={minRating}
               onChange={(e) => handleRatingChange(Number(e.target.value))}
-              className={styles.filterSelect}
+              className="bg-bg-primary border border-border-color rounded-lg px-4 py-2.5 text-sm text-white min-w-[180px] transition-all focus:outline-none focus:border-brand-primary cursor-pointer"
               title="Filter by Minimum Rating"
             >
               <option value={0}>All Ratings</option>
@@ -299,14 +301,14 @@ export default function DashboardPage() {
           </div>
 
           {/* Row 2: Status Pills */}
-          <div className={styles.pillsContainer}>
-            <span className={styles.filterLabel}>Filter by Status:</span>
+          <div className="flex gap-2 flex-wrap items-center">
+            <span className="text-xs font-bold text-gray-400 uppercase tracking-wider mr-2">Filter by Status:</span>
             {STATUS_OPTIONS.map((status) => (
               <button
                 key={status}
                 onClick={() => handleStatusChange(status)}
-                className={`${styles.pill} ${
-                  selectedStatus === status ? styles.pillActive : ''
+                className={`text-xs font-semibold px-4 py-1.5 rounded-full border border-border-color bg-transparent text-gray-400 transition-all duration-150 hover:bg-white/5 hover:text-white cursor-pointer ${
+                  selectedStatus === status ? 'bg-brand-primary text-white border-brand-primary hover:bg-brand-primary/90' : ''
                 }`}
               >
                 {status}
@@ -317,13 +319,13 @@ export default function DashboardPage() {
 
         {/* Main Grid & Pagination */}
         {isLoading && page === 1 ? (
-          <div className={styles.loaderContainer}>
-            <div className={styles.spinner}></div>
+          <div className="flex flex-col items-center justify-center min-h-[300px] gap-4 text-gray-400">
+            <div className="w-10 h-10 border-3 border-brand-primary/10 rounded-full border-t-brand-primary animate-spin"></div>
             <p>Loading companies data...</p>
           </div>
         ) : companies.length > 0 ? (
           <>
-            <div className={styles.grid}>
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mb-8">
               {companies.map((company) => (
                 <CompanyCard
                   key={company.id}
@@ -335,31 +337,31 @@ export default function DashboardPage() {
             </div>
             
             {/* Infinite Scroll Sentinel element */}
-            <div ref={loadMoreRef} className={styles.sentinel}>
+            <div ref={loadMoreRef} className="flex justify-center items-center min-h-[80px] mt-6 pb-8 text-gray-400">
               {isLoading && page > 1 && (
-                <div className={styles.sentinelSpinner}>
-                  <div className={styles.spinnerMini}></div>
+                <div className="flex items-center gap-3 text-sm">
+                  <div className="w-5 h-5 border-2 border-brand-primary/10 rounded-full border-t-brand-primary animate-spin"></div>
                   <span>Loading more companies...</span>
                 </div>
               )}
               {!isLoading && page === totalPages && totalCount > 0 && (
-                <p className={styles.caughtUpText}>
+                <p className="text-xs font-medium text-gray-500 tracking-wider">
                   You have viewed all {totalCount} target companies.
                 </p>
               )}
             </div>
           </>
         ) : (
-          <div className={styles.emptyState}>
+          <div className="bg-bg-secondary border border-dashed border-border-color rounded-2xl p-16 text-center flex flex-col items-center justify-center gap-5 text-gray-400 animate-fade-in">
             <Icons.Website size={48} />
-            <h2 className={styles.emptyTitle}>No Target Companies Found</h2>
-            <p className={styles.emptyText}>
+            <h2 className="text-xl font-bold text-white">No Target Companies Found</h2>
+            <p className="max-w-[400px] text-sm leading-relaxed mb-2">
               {stats?.total === 0
                 ? "Your directory is currently empty. Click the button below to add your first company details."
                 : "No companies match your active filters or search criteria. Try modifying your search query or reset filters."}
             </p>
             {stats?.total === 0 ? (
-              <button onClick={handleAddTrigger} className={styles.emptyBtn}>
+              <button onClick={handleAddTrigger} className="flex items-center gap-2 bg-bg-tertiary text-white border border-border-color font-semibold px-6 py-2.5 rounded-lg transition-all duration-200 hover:bg-brand-primary hover:border-brand-primary hover:-translate-y-0.5 cursor-pointer">
                 <Icons.Add size={18} />
                 Create Company Profile
               </button>
@@ -373,7 +375,7 @@ export default function DashboardPage() {
                   setMinRating(0);
                   setPage(1);
                 }}
-                className={styles.emptyBtn}
+                className="flex items-center gap-2 bg-bg-tertiary text-white border border-border-color font-semibold px-6 py-2.5 rounded-lg transition-all duration-200 hover:bg-brand-primary hover:border-brand-primary hover:-translate-y-0.5 cursor-pointer"
               >
                 Reset Filters
               </button>
