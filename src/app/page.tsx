@@ -34,7 +34,7 @@ export default function DashboardPage() {
   const fetchCompanies = async () => {
     try {
       setIsLoading(true);
-      const res = await fetch('/api/companies');
+      const res = await fetch('/api/companies', { cache: 'no-store' });
       if (res.ok) {
         const data = await res.json();
         setCompanies(data);
@@ -95,7 +95,14 @@ export default function DashboardPage() {
 
         if (res.ok) {
           const created = await res.json();
-          setCompanies((prev) => [...prev, created]);
+          // Prepend new company so it shows at the top immediately (matching database order)
+          setCompanies((prev) => [created, ...prev]);
+          
+          // Clear active filters so the new company is visible
+          setSearchQuery('');
+          setSelectedStatus('All');
+          setSelectedCategory('All');
+          setMinRating(0);
         } else {
           throw new Error('Failed to create company');
         }
