@@ -1,6 +1,5 @@
-import fs from 'fs/promises';
-import path from 'path';
-import crypto from 'crypto';
+import { dbConnect } from './mongodb';
+import CompanyModel from '@/models/Company';
 
 export interface Company {
   id: string;
@@ -20,91 +19,67 @@ export interface Company {
   updatedAt: string;
 }
 
-const DB_PATH = path.join(process.cwd(), 'src', 'data', 'companies.json');
-
-async function ensureDirectoryExists(filePath: string) {
-  const dirname = path.dirname(filePath);
-  try {
-    await fs.mkdir(dirname, { recursive: true });
-  } catch (err) {
-    // Ignore if directory already exists
-  }
-}
-
-export async function readDatabase(): Promise<Company[]> {
-  try {
-    await ensureDirectoryExists(DB_PATH);
-    const data = await fs.readFile(DB_PATH, 'utf-8');
-    return JSON.parse(data);
-  } catch (error: any) {
-    // If file doesn't exist, return empty array and create the file
-    if (error.code === 'ENOENT') {
-      await writeDatabase([]);
-      return [];
-    }
-    console.error('Error reading database:', error);
-    return [];
-  }
-}
-
-export async function writeDatabase(data: Company[]): Promise<boolean> {
-  try {
-    await ensureDirectoryExists(DB_PATH);
-    await fs.writeFile(DB_PATH, JSON.stringify(data, null, 2), 'utf-8');
-    return true;
-  } catch (error) {
-    console.error('Error writing database:', error);
-    return false;
-  }
+// Map Mongoose document to clean TypeScript object
+function mapCompany(doc: any): Company {
+  return {
+    id: doc._id.toString(),
+    name: doc.name,
+    category: doc.category,
+    address: doc.address,
+    mapLink: doc.mapLink,
+    website: doc.website,
+    facebook: doc.facebook || '',
+    linkedin: doc.linkedin || '',
+    email: doc.email || '',
+    phone: doc.phone || '',
+    status: doc.status,
+    rating: doc.rating,
+    notes: doc.notes || '',
+    createdAt: doc.createdAt instanceof Date ? doc.createdAt.toISOString() : doc.createdAt,
+    updatedAt: doc.updatedAt instanceof Date ? doc.updatedAt.toISOString() : doc.updatedAt,
+  };
 }
 
 export async function getCompanies(): Promise<Company[]> {
-  return await readDatabase();
+  await dbConnect();
+  const docs = await CompanyModel.find({}).sort({ createdAt: -1 });
+  return docs.map(mapCompany);
 }
 
 export async function getCompanyById(id: string): Promise<Company | null> {
-  const companies = await readDatabase();
-  return companies.find((c) => c.id === id) || null;
+  await dbConnect();
+  try {
+    const doc = await CompanyModel.findById(id);
+    if (!doc) return null;
+    return mapCompany(doc);
+  } catch (error) {
+    return null;
+  }
 }
 
 export async function createCompany(companyData: Omit<Company, 'id' | 'createdAt' | 'updatedAt'>): Promise<Company> {
-  const companies = await readDatabase();
-  const now = new Date().toISOString();
-  const newCompany: Company = {
-    ...companyData,
-    id: crypto.randomUUID(),
-    createdAt: now,
-    updatedAt: now,
-  };
-  companies.push(newCompany);
-  await writeDatabase(companies);
-  return newCompany;
+  await dbConnect();
+  const doc = await CompanyModel.create(companyData);
+  return mapCompany(doc);
 }
 
 export async function updateCompany(id: string, updatedData: Partial<Omit<Company, 'id' | 'createdAt' | 'updatedAt'>>): Promise<Company | null> {
-  const companies = await readDatabase();
-  const index = companies.findIndex((c) => c.id === id);
-  if (index === -1) return null;
-
-  const now = new Date().toISOString();
-  const updatedCompany: Company = {
-    ...companies[index],
-    ...updatedData,
-    updatedAt: now,
-  };
-
-  companies[index] = updatedCompany;
-  await writeDatabase(companies);
-  return updatedCompany;
+  await dbConnect();
+  try {
+    const doc = await CompanyModel.findByIdAndUpdate(id, updatedData, { new: true });
+    if (!doc) return null;
+    return mapCompany(doc);
+  } catch (error) {
+    return null;
+  }
 }
 
 export async function deleteCompany(id: string): Promise<boolean> {
-  const companies = await readDatabase();
-  const initialLength = companies.length;
-  const filtered = companies.filter((c) => c.id !== id);
-  
-  if (filtered.length === initialLength) return false;
-  
-  await writeDatabase(filtered);
-  return true;
+  await dbConnect();
+  try {
+    const result = await CompanyModel.findByIdAndDelete(id);
+    return result !== null;
+  } catch (error) {
+    return false;
+  }
 }
