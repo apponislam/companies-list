@@ -61,10 +61,20 @@ CompanySchema.index(
   }
 );
 
-// Regular indexes for filtering & sorting
+// Regular single-field indexes for quick individual filters & distinct queries
 CompanySchema.index({ status: 1 });
+CompanySchema.index({ category: 1 });
 CompanySchema.index({ rating: -1 });
 CompanySchema.index({ createdAt: -1 });
+
+// Compound indexes to cover multi-field filtering paired with sorting
+CompanySchema.index({ status: 1, category: 1, rating: -1, createdAt: -1 });
+CompanySchema.index({ status: 1, category: 1, createdAt: -1 });
+CompanySchema.index({ status: 1, rating: -1, createdAt: -1 });
+CompanySchema.index({ category: 1, rating: -1, createdAt: -1 });
+CompanySchema.index({ status: 1, createdAt: -1 });
+CompanySchema.index({ category: 1, createdAt: -1 });
+CompanySchema.index({ rating: -1, createdAt: -1 });
 
 const Company: Model<ICompany> = mongoose.models.Company || mongoose.model<ICompany>('Company', CompanySchema);
 
