@@ -10,6 +10,7 @@ interface CompanyCardProps {
 
 export default function CompanyCard({ company, onEdit, onDelete }: CompanyCardProps) {
   const [copiedType, setCopiedType] = useState<'email' | 'phone' | null>(null);
+  const [isConfirmingDelete, setIsConfirmingDelete] = useState(false);
 
   const handleCopy = async (text: string, type: 'email' | 'phone') => {
     try {
@@ -195,24 +196,46 @@ export default function CompanyCard({ company, onEdit, onDelete }: CompanyCardPr
 
       {/* Card Actions Footer */}
       <div className="flex justify-end gap-3 border-t border-border-color pt-3">
-        <button
-          onClick={() => onEdit(company)}
-          className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg border bg-brand-primary/10 text-white border-brand-primary/20 hover:bg-brand-primary hover:border-brand-primary transition-all duration-200 cursor-pointer"
-        >
-          <Icons.Edit size={14} />
-          Edit
-        </button>
-        <button
-          onClick={() => {
-            if (confirm(`Are you sure you want to delete ${company.name}?`)) {
-              onDelete(company.id);
-            }
-          }}
-          className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg border bg-nothiring/10 text-nothiring border-nothiring/20 hover:bg-nothiring hover:border-nothiring hover:text-white transition-all duration-200 cursor-pointer"
-        >
-          <Icons.Delete size={14} />
-          Delete
-        </button>
+        {isConfirmingDelete ? (
+          <div className="flex items-center gap-2 animate-fade-in w-full justify-between">
+            <span className="text-xs font-semibold text-nothiring">Are you sure?</span>
+            <div className="flex gap-2">
+              <button
+                onClick={() => setIsConfirmingDelete(false)}
+                className="text-xs font-semibold px-2.5 py-1.5 rounded-lg border border-border-color text-gray-400 hover:bg-white/5 hover:text-white transition-all cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  onDelete(company.id);
+                  setIsConfirmingDelete(false);
+                }}
+                className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg border bg-nothiring text-white border-nothiring hover:bg-nothiring/90 transition-all cursor-pointer"
+              >
+                <Icons.Delete size={14} />
+                Delete
+              </button>
+            </div>
+          </div>
+        ) : (
+          <>
+            <button
+              onClick={() => onEdit(company)}
+              className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg border bg-brand-primary/10 text-white border-brand-primary/20 hover:bg-brand-primary hover:border-brand-primary transition-all duration-200 cursor-pointer"
+            >
+              <Icons.Edit size={14} />
+              Edit
+            </button>
+            <button
+              onClick={() => setIsConfirmingDelete(true)}
+              className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg border bg-nothiring/10 text-nothiring border-nothiring/20 hover:bg-nothiring hover:border-nothiring hover:text-white transition-all duration-200 cursor-pointer"
+            >
+              <Icons.Delete size={14} />
+              Delete
+            </button>
+          </>
+        )}
       </div>
     </div>
   );
