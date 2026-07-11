@@ -142,7 +142,7 @@ export default function CompanyForm({ company, isOpen, onClose, onSubmit }: Comp
   };
 
   return (
-    <div className="fixed top-0 left-0 w-full height-full bg-black/60 backdrop-blur-sm z-[1000] flex justify-end animate-fade-in" onClick={onClose} style={{ height: '100vh' }}>
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[1000] flex justify-end animate-fade-in" onClick={onClose}>
       <div className="w-full max-w-[480px] h-full bg-bg-secondary border-l border-border-color shadow-2xl flex flex-col animate-slide-in" onClick={(e) => e.stopPropagation()}>
         
         {/* Drawer Header */}

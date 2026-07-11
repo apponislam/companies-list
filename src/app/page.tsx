@@ -228,8 +228,9 @@ export default function DashboardPage() {
   };
 
   return (
-    <main className="max-w-[1280px] mx-auto px-6 py-8">
-      <div className="w-full min-h-screen flex flex-col py-8 animate-fade-in">
+    <>
+      <main className="max-w-[1280px] mx-auto px-6 py-8">
+        <div className="w-full min-h-screen flex flex-col py-8 animate-fade-in">
         
         {/* Header */}
         <div className="flex justify-between items-center mb-8 flex-wrap gap-6">
@@ -383,17 +384,19 @@ export default function DashboardPage() {
           </div>
         )}
 
-        {/* Slide-over Form Drawer */}
-        <CompanyForm
-          company={editingCompany}
-          isOpen={isFormOpen}
-          onClose={() => {
-            setIsFormOpen(false);
-            setEditingCompany(null);
-          }}
-          onSubmit={handleFormSubmit}
-        />
-      </div>
-    </main>
+        </div>
+      </main>
+
+      {/* Slide-over Form Drawer */}
+      <CompanyForm
+        company={editingCompany}
+        isOpen={isFormOpen}
+        onClose={() => {
+          setIsFormOpen(false);
+          setEditingCompany(null);
+        }}
+        onSubmit={handleFormSubmit}
+      />
+    </>
   );
 }
