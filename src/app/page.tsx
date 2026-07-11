@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { Company } from '@/lib/database';
-import DashboardStats from '@/components/DashboardStats';
 import CompanyCard from '@/components/CompanyCard';
 import CompanyForm from '@/components/CompanyForm';
 import CompanyRow from '@/components/CompanyRow';
@@ -288,9 +287,6 @@ export default function DashboardPage() {
             </button>
           </div>
         </div>
-
-        {/* Dashboard Analytics Bar */}
-        <DashboardStats stats={stats} />
 
         {/* Filters Controls Panel */}
         <div className="bg-bg-secondary border border-border-color rounded-xl p-5 mb-8 flex flex-col gap-5">
